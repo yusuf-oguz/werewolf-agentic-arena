@@ -1,0 +1,1118 @@
+{
+  "game_id": 2,
+  "timestamp": "2026-05-18T03:25:33",
+  "schedule": {
+    "game_id": "2",
+    "ww1": "Baseline",
+    "ww2": "Reflection",
+    "seer": "ReAct",
+    "doctor": "Baseline2",
+    "v1": "ToT",
+    "v2": "Reflection2",
+    "v3": "ReAct2",
+    "v4": "ToT2",
+    "status": "pending",
+    "winner": "",
+    "rounds": ""
+  },
+  "result": {
+    "winner": "werewolf",
+    "rounds": 3,
+    "eliminations": [
+      {
+        "round": 1,
+        "phase": "day",
+        "player": "Carol",
+        "role": "seer",
+        "cause": "vote"
+      },
+      {
+        "round": 2,
+        "phase": "day",
+        "player": "Eve",
+        "role": "villager",
+        "cause": "vote"
+      },
+      {
+        "round": 3,
+        "phase": "night",
+        "player": "Dave",
+        "role": "doctor",
+        "cause": "werewolf_kill"
+      },
+      {
+        "round": 3,
+        "phase": "day",
+        "player": "Grace",
+        "role": "villager",
+        "cause": "vote"
+      }
+    ],
+    "detection_accuracy": 0.0,
+    "survival_avg_rounds": {
+      "Baseline": 3.0,
+      "Reflection": 3.0,
+      "ReAct": 2.0,
+      "ToT": 2.5
+    },
+    "api": {
+      "total_calls": 118,
+      "total_tokens": 135109,
+      "total_elapsed_sec": 150.35,
+      "per_pattern": {
+        "ReAct": {
+          "calls": 15,
+          "tokens": 17397,
+          "elapsed_sec": 37.6
+        },
+        "Baseline": {
+          "calls": 16,
+          "tokens": 16901,
+          "elapsed_sec": 14.610000000000001
+        },
+        "Reflection": {
+          "calls": 37,
+          "tokens": 42374,
+          "elapsed_sec": 31.739999999999995
+        },
+        "ToT": {
+          "calls": 50,
+          "tokens": 58437,
+          "elapsed_sec": 66.40000000000002
+        }
+      }
+    },
+    "call_log": [
+      {
+        "caller": "Carol[ReAct].action.step1",
+        "prompt_tokens": 332,
+        "completion_tokens": 62,
+        "total_tokens": 394,
+        "elapsed_sec": 3.19
+      },
+      {
+        "caller": "Carol[ReAct].action.step2",
+        "prompt_tokens": 410,
+        "completion_tokens": 65,
+        "total_tokens": 475,
+        "elapsed_sec": 2.72
+      },
+      {
+        "caller": "Dave[Baseline].night",
+        "prompt_tokens": 177,
+        "completion_tokens": 2,
+        "total_tokens": 179,
+        "elapsed_sec": 0.73
+      },
+      {
+        "caller": "Alice[Baseline].night",
+        "prompt_tokens": 192,
+        "completion_tokens": 2,
+        "total_tokens": 194,
+        "elapsed_sec": 0.5
+      },
+      {
+        "caller": "Bob[Reflection].night.draft",
+        "prompt_tokens": 189,
+        "completion_tokens": 1,
+        "total_tokens": 190,
+        "elapsed_sec": 1.84
+      },
+      {
+        "caller": "Bob[Reflection].night.critique",
+        "prompt_tokens": 202,
+        "completion_tokens": 5,
+        "total_tokens": 207,
+        "elapsed_sec": 0.59
+      },
+      {
+        "caller": "Bob[Reflection].night.revise",
+        "prompt_tokens": 189,
+        "completion_tokens": 1,
+        "total_tokens": 190,
+        "elapsed_sec": 0.77
+      },
+      {
+        "caller": "Carol[ReAct].speech.step1",
+        "prompt_tokens": 349,
+        "completion_tokens": 100,
+        "total_tokens": 449,
+        "elapsed_sec": 1.77
+      },
+      {
+        "caller": "Bob[Reflection].speak.draft",
+        "prompt_tokens": 249,
+        "completion_tokens": 51,
+        "total_tokens": 300,
+        "elapsed_sec": 1.46
+      },
+      {
+        "caller": "Bob[Reflection].speak.critique",
+        "prompt_tokens": 331,
+        "completion_tokens": 3,
+        "total_tokens": 334,
+        "elapsed_sec": 1.02
+      },
+      {
+        "caller": "Hank[ToT].speak.strategies",
+        "prompt_tokens": 320,
+        "completion_tokens": 85,
+        "total_tokens": 405,
+        "elapsed_sec": 1.75
+      },
+      {
+        "caller": "Hank[ToT].speak.branch2",
+        "prompt_tokens": 321,
+        "completion_tokens": 68,
+        "total_tokens": 389,
+        "elapsed_sec": 1.72
+      },
+      {
+        "caller": "Hank[ToT].speak.branch3",
+        "prompt_tokens": 330,
+        "completion_tokens": 93,
+        "total_tokens": 423,
+        "elapsed_sec": 1.77
+      },
+      {
+        "caller": "Hank[ToT].speak.branch1",
+        "prompt_tokens": 322,
+        "completion_tokens": 64,
+        "total_tokens": 386,
+        "elapsed_sec": 2.5
+      },
+      {
+        "caller": "Hank[ToT].speak.eval",
+        "prompt_tokens": 553,
+        "completion_tokens": 4,
+        "total_tokens": 557,
+        "elapsed_sec": 0.9
+      },
+      {
+        "caller": "Frank[Reflection].speak.draft",
+        "prompt_tokens": 387,
+        "completion_tokens": 67,
+        "total_tokens": 454,
+        "elapsed_sec": 1.61
+      },
+      {
+        "caller": "Frank[Reflection].speak.critique",
+        "prompt_tokens": 485,
+        "completion_tokens": 3,
+        "total_tokens": 488,
+        "elapsed_sec": 0.87
+      },
+      {
+        "caller": "Eve[ToT].speak.strategies",
+        "prompt_tokens": 486,
+        "completion_tokens": 95,
+        "total_tokens": 581,
+        "elapsed_sec": 4.44
+      },
+      {
+        "caller": "Eve[ToT].speak.branch2",
+        "prompt_tokens": 495,
+        "completion_tokens": 72,
+        "total_tokens": 567,
+        "elapsed_sec": 1.95
+      },
+      {
+        "caller": "Eve[ToT].speak.branch3",
+        "prompt_tokens": 495,
+        "completion_tokens": 81,
+        "total_tokens": 576,
+        "elapsed_sec": 2.03
+      },
+      {
+        "caller": "Eve[ToT].speak.branch1",
+        "prompt_tokens": 491,
+        "completion_tokens": 88,
+        "total_tokens": 579,
+        "elapsed_sec": 2.11
+      },
+      {
+        "caller": "Eve[ToT].speak.eval",
+        "prompt_tokens": 736,
+        "completion_tokens": 4,
+        "total_tokens": 740,
+        "elapsed_sec": 0.96
+      },
+      {
+        "caller": "Dave[Baseline].speak",
+        "prompt_tokens": 531,
+        "completion_tokens": 61,
+        "total_tokens": 592,
+        "elapsed_sec": 1.77
+      },
+      {
+        "caller": "Grace[ReAct].speech.step1",
+        "prompt_tokens": 740,
+        "completion_tokens": 120,
+        "total_tokens": 860,
+        "elapsed_sec": 1.79
+      },
+      {
+        "caller": "Grace[ReAct].speech.step2",
+        "prompt_tokens": 870,
+        "completion_tokens": 115,
+        "total_tokens": 985,
+        "elapsed_sec": 2.24
+      },
+      {
+        "caller": "Alice[Baseline].speak",
+        "prompt_tokens": 679,
+        "completion_tokens": 64,
+        "total_tokens": 743,
+        "elapsed_sec": 0.98
+      },
+      {
+        "caller": "Alice[Baseline].vote",
+        "prompt_tokens": 749,
+        "completion_tokens": 1,
+        "total_tokens": 750,
+        "elapsed_sec": 0.39
+      },
+      {
+        "caller": "Bob[Reflection].vote.draft",
+        "prompt_tokens": 757,
+        "completion_tokens": 1,
+        "total_tokens": 758,
+        "elapsed_sec": 0.52
+      },
+      {
+        "caller": "Bob[Reflection].vote.critique",
+        "prompt_tokens": 774,
+        "completion_tokens": 5,
+        "total_tokens": 779,
+        "elapsed_sec": 0.6
+      },
+      {
+        "caller": "Bob[Reflection].vote.revise",
+        "prompt_tokens": 756,
+        "completion_tokens": 1,
+        "total_tokens": 757,
+        "elapsed_sec": 0.52
+      },
+      {
+        "caller": "Carol[ReAct].vote.step1",
+        "prompt_tokens": 921,
+        "completion_tokens": 85,
+        "total_tokens": 1006,
+        "elapsed_sec": 1.5
+      },
+      {
+        "caller": "Carol[ReAct].vote.step2",
+        "prompt_tokens": 1025,
+        "completion_tokens": 80,
+        "total_tokens": 1105,
+        "elapsed_sec": 1.32
+      },
+      {
+        "caller": "Carol[ReAct].vote.step3",
+        "prompt_tokens": 1117,
+        "completion_tokens": 170,
+        "total_tokens": 1287,
+        "elapsed_sec": 2.49
+      },
+      {
+        "caller": "Dave[Baseline].vote",
+        "prompt_tokens": 755,
+        "completion_tokens": 1,
+        "total_tokens": 756,
+        "elapsed_sec": 0.65
+      },
+      {
+        "caller": "Eve[ToT].vote.strategies",
+        "prompt_tokens": 781,
+        "completion_tokens": 98,
+        "total_tokens": 879,
+        "elapsed_sec": 1.9
+      },
+      {
+        "caller": "Eve[ToT].vote.branch1",
+        "prompt_tokens": 787,
+        "completion_tokens": 1,
+        "total_tokens": 788,
+        "elapsed_sec": 0.65
+      },
+      {
+        "caller": "Eve[ToT].vote.branch2",
+        "prompt_tokens": 785,
+        "completion_tokens": 1,
+        "total_tokens": 786,
+        "elapsed_sec": 0.68
+      },
+      {
+        "caller": "Eve[ToT].vote.branch3",
+        "prompt_tokens": 786,
+        "completion_tokens": 1,
+        "total_tokens": 787,
+        "elapsed_sec": 0.77
+      },
+      {
+        "caller": "Eve[ToT].vote.eval",
+        "prompt_tokens": 775,
+        "completion_tokens": 4,
+        "total_tokens": 779,
+        "elapsed_sec": 0.68
+      },
+      {
+        "caller": "Frank[Reflection].vote.draft",
+        "prompt_tokens": 765,
+        "completion_tokens": 1,
+        "total_tokens": 766,
+        "elapsed_sec": 0.48
+      },
+      {
+        "caller": "Frank[Reflection].vote.critique",
+        "prompt_tokens": 782,
+        "completion_tokens": 5,
+        "total_tokens": 787,
+        "elapsed_sec": 1.1
+      },
+      {
+        "caller": "Frank[Reflection].vote.revise",
+        "prompt_tokens": 764,
+        "completion_tokens": 1,
+        "total_tokens": 765,
+        "elapsed_sec": 0.68
+      },
+      {
+        "caller": "Grace[ReAct].vote.step1",
+        "prompt_tokens": 915,
+        "completion_tokens": 174,
+        "total_tokens": 1089,
+        "elapsed_sec": 2.53
+      },
+      {
+        "caller": "Grace[ReAct].vote.step2",
+        "prompt_tokens": 1144,
+        "completion_tokens": 92,
+        "total_tokens": 1236,
+        "elapsed_sec": 1.47
+      },
+      {
+        "caller": "Hank[ToT].vote.strategies",
+        "prompt_tokens": 796,
+        "completion_tokens": 105,
+        "total_tokens": 901,
+        "elapsed_sec": 2.37
+      },
+      {
+        "caller": "Hank[ToT].vote.branch1",
+        "prompt_tokens": 799,
+        "completion_tokens": 1,
+        "total_tokens": 800,
+        "elapsed_sec": 0.54
+      },
+      {
+        "caller": "Hank[ToT].vote.branch3",
+        "prompt_tokens": 805,
+        "completion_tokens": 1,
+        "total_tokens": 806,
+        "elapsed_sec": 0.55
+      },
+      {
+        "caller": "Hank[ToT].vote.branch2",
+        "prompt_tokens": 808,
+        "completion_tokens": 1,
+        "total_tokens": 809,
+        "elapsed_sec": 1.21
+      },
+      {
+        "caller": "Hank[ToT].vote.eval",
+        "prompt_tokens": 790,
+        "completion_tokens": 4,
+        "total_tokens": 794,
+        "elapsed_sec": 0.6
+      },
+      {
+        "caller": "Dave[Baseline].night",
+        "prompt_tokens": 794,
+        "completion_tokens": 2,
+        "total_tokens": 796,
+        "elapsed_sec": 0.5
+      },
+      {
+        "caller": "Alice[Baseline].night",
+        "prompt_tokens": 809,
+        "completion_tokens": 2,
+        "total_tokens": 811,
+        "elapsed_sec": 1.75
+      },
+      {
+        "caller": "Bob[Reflection].night.draft",
+        "prompt_tokens": 806,
+        "completion_tokens": 2,
+        "total_tokens": 808,
+        "elapsed_sec": 0.5
+      },
+      {
+        "caller": "Bob[Reflection].night.critique",
+        "prompt_tokens": 821,
+        "completion_tokens": 5,
+        "total_tokens": 826,
+        "elapsed_sec": 0.59
+      },
+      {
+        "caller": "Bob[Reflection].night.revise",
+        "prompt_tokens": 806,
+        "completion_tokens": 1,
+        "total_tokens": 807,
+        "elapsed_sec": 0.43
+      },
+      {
+        "caller": "Bob[Reflection].speak.draft",
+        "prompt_tokens": 811,
+        "completion_tokens": 80,
+        "total_tokens": 891,
+        "elapsed_sec": 2.13
+      },
+      {
+        "caller": "Bob[Reflection].speak.critique",
+        "prompt_tokens": 922,
+        "completion_tokens": 3,
+        "total_tokens": 925,
+        "elapsed_sec": 0.52
+      },
+      {
+        "caller": "Eve[ToT].speak.strategies",
+        "prompt_tokens": 918,
+        "completion_tokens": 105,
+        "total_tokens": 1023,
+        "elapsed_sec": 2.11
+      },
+      {
+        "caller": "Eve[ToT].speak.branch3",
+        "prompt_tokens": 932,
+        "completion_tokens": 74,
+        "total_tokens": 1006,
+        "elapsed_sec": 1.71
+      },
+      {
+        "caller": "Eve[ToT].speak.branch1",
+        "prompt_tokens": 923,
+        "completion_tokens": 102,
+        "total_tokens": 1025,
+        "elapsed_sec": 1.97
+      },
+      {
+        "caller": "Eve[ToT].speak.branch2",
+        "prompt_tokens": 932,
+        "completion_tokens": 94,
+        "total_tokens": 1026,
+        "elapsed_sec": 2.1
+      },
+      {
+        "caller": "Eve[ToT].speak.eval",
+        "prompt_tokens": 1197,
+        "completion_tokens": 4,
+        "total_tokens": 1201,
+        "elapsed_sec": 0.62
+      },
+      {
+        "caller": "Grace[ReAct].speech.step1",
+        "prompt_tokens": 1130,
+        "completion_tokens": 85,
+        "total_tokens": 1215,
+        "elapsed_sec": 2.38
+      },
+      {
+        "caller": "Grace[ReAct].speech.step2",
+        "prompt_tokens": 1288,
+        "completion_tokens": 168,
+        "total_tokens": 1456,
+        "elapsed_sec": 3.6
+      },
+      {
+        "caller": "Dave[Baseline].speak",
+        "prompt_tokens": 1063,
+        "completion_tokens": 81,
+        "total_tokens": 1144,
+        "elapsed_sec": 1.42
+      },
+      {
+        "caller": "Hank[ToT].speak.strategies",
+        "prompt_tokens": 1178,
+        "completion_tokens": 103,
+        "total_tokens": 1281,
+        "elapsed_sec": 1.88
+      },
+      {
+        "caller": "Hank[ToT].speak.branch2",
+        "prompt_tokens": 1190,
+        "completion_tokens": 74,
+        "total_tokens": 1264,
+        "elapsed_sec": 1.49
+      },
+      {
+        "caller": "Hank[ToT].speak.branch3",
+        "prompt_tokens": 1190,
+        "completion_tokens": 80,
+        "total_tokens": 1270,
+        "elapsed_sec": 1.53
+      },
+      {
+        "caller": "Hank[ToT].speak.branch1",
+        "prompt_tokens": 1185,
+        "completion_tokens": 96,
+        "total_tokens": 1281,
+        "elapsed_sec": 1.78
+      },
+      {
+        "caller": "Hank[ToT].speak.eval",
+        "prompt_tokens": 1435,
+        "completion_tokens": 4,
+        "total_tokens": 1439,
+        "elapsed_sec": 0.5
+      },
+      {
+        "caller": "Alice[Baseline].speak",
+        "prompt_tokens": 1239,
+        "completion_tokens": 79,
+        "total_tokens": 1318,
+        "elapsed_sec": 1.36
+      },
+      {
+        "caller": "Frank[Reflection].speak.draft",
+        "prompt_tokens": 1308,
+        "completion_tokens": 99,
+        "total_tokens": 1407,
+        "elapsed_sec": 1.99
+      },
+      {
+        "caller": "Frank[Reflection].speak.critique",
+        "prompt_tokens": 1438,
+        "completion_tokens": 3,
+        "total_tokens": 1441,
+        "elapsed_sec": 0.62
+      },
+      {
+        "caller": "Alice[Baseline].vote",
+        "prompt_tokens": 1424,
+        "completion_tokens": 2,
+        "total_tokens": 1426,
+        "elapsed_sec": 0.59
+      },
+      {
+        "caller": "Bob[Reflection].vote.draft",
+        "prompt_tokens": 1432,
+        "completion_tokens": 2,
+        "total_tokens": 1434,
+        "elapsed_sec": 0.7
+      },
+      {
+        "caller": "Bob[Reflection].vote.critique",
+        "prompt_tokens": 1451,
+        "completion_tokens": 3,
+        "total_tokens": 1454,
+        "elapsed_sec": 0.49
+      },
+      {
+        "caller": "Dave[Baseline].vote",
+        "prompt_tokens": 1425,
+        "completion_tokens": 2,
+        "total_tokens": 1427,
+        "elapsed_sec": 0.47
+      },
+      {
+        "caller": "Eve[ToT].vote.strategies",
+        "prompt_tokens": 1451,
+        "completion_tokens": 103,
+        "total_tokens": 1554,
+        "elapsed_sec": 2.11
+      },
+      {
+        "caller": "Eve[ToT].vote.branch1",
+        "prompt_tokens": 1459,
+        "completion_tokens": 1,
+        "total_tokens": 1460,
+        "elapsed_sec": 0.53
+      },
+      {
+        "caller": "Eve[ToT].vote.branch2",
+        "prompt_tokens": 1458,
+        "completion_tokens": 1,
+        "total_tokens": 1459,
+        "elapsed_sec": 0.55
+      },
+      {
+        "caller": "Eve[ToT].vote.branch3",
+        "prompt_tokens": 1458,
+        "completion_tokens": 1,
+        "total_tokens": 1459,
+        "elapsed_sec": 0.59
+      },
+      {
+        "caller": "Eve[ToT].vote.eval",
+        "prompt_tokens": 1447,
+        "completion_tokens": 4,
+        "total_tokens": 1451,
+        "elapsed_sec": 0.57
+      },
+      {
+        "caller": "Frank[Reflection].vote.draft",
+        "prompt_tokens": 1435,
+        "completion_tokens": 2,
+        "total_tokens": 1437,
+        "elapsed_sec": 1.06
+      },
+      {
+        "caller": "Frank[Reflection].vote.critique",
+        "prompt_tokens": 1454,
+        "completion_tokens": 5,
+        "total_tokens": 1459,
+        "elapsed_sec": 0.55
+      },
+      {
+        "caller": "Frank[Reflection].vote.revise",
+        "prompt_tokens": 1434,
+        "completion_tokens": 2,
+        "total_tokens": 1436,
+        "elapsed_sec": 0.51
+      },
+      {
+        "caller": "Grace[ReAct].vote.step1",
+        "prompt_tokens": 1585,
+        "completion_tokens": 210,
+        "total_tokens": 1795,
+        "elapsed_sec": 3.85
+      },
+      {
+        "caller": "Hank[ToT].vote.strategies",
+        "prompt_tokens": 1466,
+        "completion_tokens": 106,
+        "total_tokens": 1572,
+        "elapsed_sec": 2.93
+      },
+      {
+        "caller": "Hank[ToT].vote.branch3",
+        "prompt_tokens": 1480,
+        "completion_tokens": 1,
+        "total_tokens": 1481,
+        "elapsed_sec": 0.5
+      },
+      {
+        "caller": "Hank[ToT].vote.branch1",
+        "prompt_tokens": 1470,
+        "completion_tokens": 2,
+        "total_tokens": 1472,
+        "elapsed_sec": 0.57
+      },
+      {
+        "caller": "Hank[ToT].vote.branch2",
+        "prompt_tokens": 1473,
+        "completion_tokens": 1,
+        "total_tokens": 1474,
+        "elapsed_sec": 0.57
+      },
+      {
+        "caller": "Hank[ToT].vote.eval",
+        "prompt_tokens": 1462,
+        "completion_tokens": 4,
+        "total_tokens": 1466,
+        "elapsed_sec": 0.49
+      },
+      {
+        "caller": "Dave[Baseline].night",
+        "prompt_tokens": 1460,
+        "completion_tokens": 2,
+        "total_tokens": 1462,
+        "elapsed_sec": 0.76
+      },
+      {
+        "caller": "Alice[Baseline].night",
+        "prompt_tokens": 1475,
+        "completion_tokens": 1,
+        "total_tokens": 1476,
+        "elapsed_sec": 0.47
+      },
+      {
+        "caller": "Bob[Reflection].night.draft",
+        "prompt_tokens": 1472,
+        "completion_tokens": 1,
+        "total_tokens": 1473,
+        "elapsed_sec": 0.53
+      },
+      {
+        "caller": "Bob[Reflection].night.critique",
+        "prompt_tokens": 1489,
+        "completion_tokens": 5,
+        "total_tokens": 1494,
+        "elapsed_sec": 0.77
+      },
+      {
+        "caller": "Bob[Reflection].night.revise",
+        "prompt_tokens": 1472,
+        "completion_tokens": 1,
+        "total_tokens": 1473,
+        "elapsed_sec": 0.63
+      },
+      {
+        "caller": "Grace[ReAct].speech.step1",
+        "prompt_tokens": 1628,
+        "completion_tokens": 165,
+        "total_tokens": 1793,
+        "elapsed_sec": 2.96
+      },
+      {
+        "caller": "Hank[ToT].speak.strategies",
+        "prompt_tokens": 1587,
+        "completion_tokens": 103,
+        "total_tokens": 1690,
+        "elapsed_sec": 1.38
+      },
+      {
+        "caller": "Hank[ToT].speak.branch3",
+        "prompt_tokens": 1609,
+        "completion_tokens": 71,
+        "total_tokens": 1680,
+        "elapsed_sec": 1.76
+      },
+      {
+        "caller": "Hank[ToT].speak.branch2",
+        "prompt_tokens": 1599,
+        "completion_tokens": 78,
+        "total_tokens": 1677,
+        "elapsed_sec": 1.88
+      },
+      {
+        "caller": "Hank[ToT].speak.branch1",
+        "prompt_tokens": 1598,
+        "completion_tokens": 88,
+        "total_tokens": 1686,
+        "elapsed_sec": 2.04
+      },
+      {
+        "caller": "Hank[ToT].speak.eval",
+        "prompt_tokens": 1831,
+        "completion_tokens": 4,
+        "total_tokens": 1835,
+        "elapsed_sec": 0.74
+      },
+      {
+        "caller": "Bob[Reflection].speak.draft",
+        "prompt_tokens": 1651,
+        "completion_tokens": 92,
+        "total_tokens": 1743,
+        "elapsed_sec": 1.98
+      },
+      {
+        "caller": "Bob[Reflection].speak.critique",
+        "prompt_tokens": 1774,
+        "completion_tokens": 3,
+        "total_tokens": 1777,
+        "elapsed_sec": 0.51
+      },
+      {
+        "caller": "Frank[Reflection].speak.draft",
+        "prompt_tokens": 1734,
+        "completion_tokens": 86,
+        "total_tokens": 1820,
+        "elapsed_sec": 1.28
+      },
+      {
+        "caller": "Frank[Reflection].speak.critique",
+        "prompt_tokens": 1851,
+        "completion_tokens": 3,
+        "total_tokens": 1854,
+        "elapsed_sec": 0.45
+      },
+      {
+        "caller": "Alice[Baseline].speak",
+        "prompt_tokens": 1836,
+        "completion_tokens": 77,
+        "total_tokens": 1913,
+        "elapsed_sec": 1.32
+      },
+      {
+        "caller": "Alice[Baseline].vote",
+        "prompt_tokens": 1913,
+        "completion_tokens": 1,
+        "total_tokens": 1914,
+        "elapsed_sec": 0.95
+      },
+      {
+        "caller": "Bob[Reflection].vote.draft",
+        "prompt_tokens": 1921,
+        "completion_tokens": 1,
+        "total_tokens": 1922,
+        "elapsed_sec": 1.06
+      },
+      {
+        "caller": "Bob[Reflection].vote.critique",
+        "prompt_tokens": 1944,
+        "completion_tokens": 3,
+        "total_tokens": 1947,
+        "elapsed_sec": 0.61
+      },
+      {
+        "caller": "Frank[Reflection].vote.draft",
+        "prompt_tokens": 1914,
+        "completion_tokens": 1,
+        "total_tokens": 1915,
+        "elapsed_sec": 0.54
+      },
+      {
+        "caller": "Frank[Reflection].vote.critique",
+        "prompt_tokens": 1937,
+        "completion_tokens": 5,
+        "total_tokens": 1942,
+        "elapsed_sec": 0.46
+      },
+      {
+        "caller": "Frank[Reflection].vote.revise",
+        "prompt_tokens": 1913,
+        "completion_tokens": 1,
+        "total_tokens": 1914,
+        "elapsed_sec": 0.77
+      },
+      {
+        "caller": "Grace[ReAct].vote.step1",
+        "prompt_tokens": 2064,
+        "completion_tokens": 188,
+        "total_tokens": 2252,
+        "elapsed_sec": 3.79
+      },
+      {
+        "caller": "Hank[ToT].vote.strategies",
+        "prompt_tokens": 1945,
+        "completion_tokens": 111,
+        "total_tokens": 2056,
+        "elapsed_sec": 1.5
+      },
+      {
+        "caller": "Hank[ToT].vote.branch3",
+        "prompt_tokens": 1959,
+        "completion_tokens": 1,
+        "total_tokens": 1960,
+        "elapsed_sec": 0.45
+      },
+      {
+        "caller": "Hank[ToT].vote.branch1",
+        "prompt_tokens": 1953,
+        "completion_tokens": 1,
+        "total_tokens": 1954,
+        "elapsed_sec": 0.46
+      },
+      {
+        "caller": "Hank[ToT].vote.branch2",
+        "prompt_tokens": 1953,
+        "completion_tokens": 1,
+        "total_tokens": 1954,
+        "elapsed_sec": 0.56
+      },
+      {
+        "caller": "Hank[ToT].vote.eval",
+        "prompt_tokens": 1945,
+        "completion_tokens": 4,
+        "total_tokens": 1949,
+        "elapsed_sec": 0.45
+      }
+    ],
+    "speeches": [
+      {
+        "round": 1,
+        "player_id": 2,
+        "text": "\"I urge everyone to consider the possibility that Alice is not who she seems. My investigations have unveiled a darker truth about her role. We must come together to discuss our suspicions and focus on removing this threat before it's too late!\""
+      },
+      {
+        "round": 1,
+        "player_id": 1,
+        "text": "I find Carol's accusations quite alarming and a bit overzealous. We should focus on gathering more information before making any rash decisions. Instead of targeting Alice, let’s discuss the actions and behavior of all players to ensure we make a well-informed vote."
+      },
+      {
+        "round": 1,
+        "player_id": 7,
+        "text": "I understand the concerns raised by Carol, but I think we need to be cautious about jumping to conclusions based on one person's investigation. Alice may very well be innocent, and targeting her could divert our attention from the real threat. Let’s take a moment to evaluate everyone's behavior, especially Carol's aggressive stance—this could be a strategy to mislead us away from the werewolves. I encourage us all to discuss our observations openly before we make any hasty votes."
+      },
+      {
+        "round": 1,
+        "player_id": 5,
+        "text": "I believe it's crucial for us to discuss everyone's actions and not jump to conclusions based solely on a single perspective. Carol's aggressive accusation towards Alice seems a bit premature, and we should consider the possibility that Carol is trying to deflect suspicion away from herself. Let's share our observations and thoughts so we can make a more informed decision together."
+      },
+      {
+        "round": 1,
+        "player_id": 4,
+        "text": "\"I appreciate everyone’s concerns, but I think it’s crucial that we remain vigilant and not allow any one person’s accusations to steer our decision-making. Let’s take a step back and evaluate how each of us is interacting with one another. By sharing our observations, we can better identify any suspicious behavior, especially from those who are either overly defensive or aggressive.\""
+      },
+      {
+        "round": 1,
+        "player_id": 3,
+        "text": "I urge everyone to remain cautious and evaluate the behaviors we've seen so far. Carol's aggressive stance towards Alice is concerning, as it could either be an attempt to eliminate a villager or a distraction from her own intentions. Let's be careful in our accusations and work together to uncover the real threats among us."
+      },
+      {
+        "round": 1,
+        "player_id": 6,
+        "text": "\"I believe we should take a cautious approach before making any accusations. Carol's strong insistence on Alice being suspicious raises concern, and both Bob and Hank have pointed out the potential pitfalls of relying solely on her claims. Let's remain focused on gathering more data and observing how each of us interacts before we make a hasty vote.\""
+      },
+      {
+        "round": 1,
+        "player_id": 0,
+        "text": "I appreciate everyone's input, but I believe we should be careful about targeting individuals based on one person's claims. Carol's aggressive accusations seem a bit rushed, and I urge us all to consider the possibility that she could be misdirecting our focus. Let's take the time to evaluate everyone's behaviors more closely before jumping to conclusions."
+      },
+      {
+        "round": 2,
+        "player_id": 1,
+        "text": "I appreciate the discussions we've had and the caution everyone is urging. While I understand the need to scrutinize behavior, I still feel that Carol’s accusations were overly aggressive and may have been a tactic to draw attention away from herself. Let's focus on the remaining players and evaluate their actions instead of allowing one strong opinion to dictate our choices. We need to work together to uncover any hidden threats among us."
+      },
+      {
+        "round": 2,
+        "player_id": 4,
+        "text": "\"I want to take a moment to reflect on the unanimous vote against Carol last round. While it’s important to make decisions as a group, it concerns me that several players, including some of our more vocal ones, quickly aligned without a deeper discussion. We need to ensure that our judgments are based on each player's unique behavior and not just following the majority's lead. Let's be cautious and consider if there could be a hidden agenda among those who were so quick to vote.\""
+      },
+      {
+        "round": 2,
+        "player_id": 6,
+        "text": "\"I believe we need to carefully examine the cohort of players who supported Carol's elimination so fervently. While her behavior was concerning, it's possible that the quick vote against her was an attempt to distract from the true identities of the werewolves among us. We should scrutinize the actions of those who voted in favor of her elimination and ensure we aren't overlooking any suspicious behavior.\""
+      },
+      {
+        "round": 2,
+        "player_id": 3,
+        "text": "I appreciate the discussions we've had so far, but I urge us to analyze the motives behind our actions last round. The quick consensus to eliminate Carol raises red flags for me; it's crucial we remember that a hasty vote can easily be manipulated by the werewolves. Let's focus on the behaviors of everyone going forward to ensure we don't overlook any potential threats. We must stay vigilant and discerning in our evaluations."
+      },
+      {
+        "round": 2,
+        "player_id": 7,
+        "text": "I believe we need to reflect on how quickly we reached a consensus to eliminate Carol last round. As Eve pointed out, this rapid alignment might suggest that some players were eager to redirect our focus away from themselves. Let's take a step back and analyze everyone's behavior closely, especially those who were quick to vote against Carol, to ensure we aren't overlooking any potential threats among us."
+      },
+      {
+        "round": 2,
+        "player_id": 0,
+        "text": "I appreciate everyone’s cautious approach, and I agree that we need to evaluate our past actions critically. I want to point out that while Carol’s behavior may have raised concern, the swift unity in targeting her could potentially hide true threats. Let’s not forget the importance of examining the motivations and behaviors of those who quickly aligned against her, as they may be trying to deflect attention from themselves."
+      },
+      {
+        "round": 2,
+        "player_id": 5,
+        "text": "I appreciate the discussions we've had so far, and I want to echo the concerns raised about how quickly we united against Carol. While her behavior was suspicious, the strong consensus to eliminate her without a deeper examination of motives raises red flags for me. I believe we should focus on the players who were quick to vote for her, as they might be trying to divert our attention from themselves. Let's carefully scrutinize their actions and see if we can uncover the true identities of the werewolves among us."
+      },
+      {
+        "round": 3,
+        "player_id": 6,
+        "text": "\"I believe that we need to remain cautious about how we are aligning our votes. The shift in votes from Carol to Eve has raised concerns for me. It’s crucial that we scrutinize the motivations of those who easily changed their alliances, as this may point to the hidden identities of the werewolves among us.\""
+      },
+      {
+        "round": 3,
+        "player_id": 7,
+        "text": "I want to draw attention to Grace's quick shift in votes from targeting Carol to now aligning against Eve. This sudden change raises some red flags for me; it suggests she may be attempting to redirect our focus away from herself or potentially mislead us. I believe we should closely examine her behavior and motivations, as they could very well point us towards uncovering the real werewolves among us."
+      },
+      {
+        "round": 3,
+        "player_id": 1,
+        "text": "I appreciate everyone's input in our discussions, but I want to highlight the tendency for quick shifts in suspicion. While we critically examined Carol's removal, I think the sudden consensus against Eve last round should serve as a reminder to stay vigilant about our motivations. It's easy to point fingers when emotions run high, and I urge us all to reflect carefully on our actions before moving forward. Let’s ensure we evaluate each player fairly and not get swept up in groupthink."
+      },
+      {
+        "round": 3,
+        "player_id": 5,
+        "text": "I’d like to reiterate some of the concerns raised about how quickly we turned on Eve last round. Grace’s sudden shift in suspicion towards Eve feels suspicious, as if she may be trying to deflect attention away from herself. We need to carefully analyze the motivations of those of us still standing; I urge everyone to keep a close eye on Grace as we discuss our next steps. Let's work together to uncover any hidden agendas."
+      },
+      {
+        "round": 3,
+        "player_id": 0,
+        "text": "I believe it's crucial for us to focus on the motivations behind our votes and reactions from the previous rounds. The sudden shift in suspicion towards Eve seems to be a tactic to deflect attention from other players who may not have been scrutinized as closely. We need to remain vigilant and not let emotions dictate our choices; let's carefully analyze everyone’s behavior to uncover any hidden agendas among us."
+      }
+    ],
+    "votes": [
+      {
+        "round": 1,
+        "voter_id": 0,
+        "target_id": 2
+      },
+      {
+        "round": 1,
+        "voter_id": 1,
+        "target_id": 2
+      },
+      {
+        "round": 1,
+        "voter_id": 2,
+        "target_id": 0
+      },
+      {
+        "round": 1,
+        "voter_id": 3,
+        "target_id": 2
+      },
+      {
+        "round": 1,
+        "voter_id": 4,
+        "target_id": 2
+      },
+      {
+        "round": 1,
+        "voter_id": 5,
+        "target_id": 2
+      },
+      {
+        "round": 1,
+        "voter_id": 6,
+        "target_id": 2
+      },
+      {
+        "round": 1,
+        "voter_id": 7,
+        "target_id": 2
+      },
+      {
+        "round": 2,
+        "voter_id": 0,
+        "target_id": 4
+      },
+      {
+        "round": 2,
+        "voter_id": 1,
+        "target_id": 4
+      },
+      {
+        "round": 2,
+        "voter_id": 3,
+        "target_id": 4
+      },
+      {
+        "round": 2,
+        "voter_id": 4,
+        "target_id": 1
+      },
+      {
+        "round": 2,
+        "voter_id": 5,
+        "target_id": 4
+      },
+      {
+        "round": 2,
+        "voter_id": 6,
+        "target_id": 1
+      },
+      {
+        "round": 2,
+        "voter_id": 7,
+        "target_id": 4
+      },
+      {
+        "round": 3,
+        "voter_id": 0,
+        "target_id": 6
+      },
+      {
+        "round": 3,
+        "voter_id": 1,
+        "target_id": 6
+      },
+      {
+        "round": 3,
+        "voter_id": 5,
+        "target_id": 6
+      },
+      {
+        "round": 3,
+        "voter_id": 6,
+        "target_id": 5
+      },
+      {
+        "round": 3,
+        "voter_id": 7,
+        "target_id": 6
+      }
+    ]
+  }
+}

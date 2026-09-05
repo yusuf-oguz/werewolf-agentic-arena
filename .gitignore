@@ -1,0 +1,16 @@
+# Environment
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Local-only: personal working notes and scripts
+_local/
+PROMPT_PLAN.md
+PROMPT_SYSTEM.md

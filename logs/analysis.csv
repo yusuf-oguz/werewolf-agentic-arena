@@ -1,0 +1,5 @@
+pattern,games_as_ww,wins_as_ww,win_rate_ww,games_as_village,wins_as_village,win_rate_village,detection_acc_avg,survival_avg,api_calls_per_game,api_tokens_per_game,api_elapsed_per_game
+Baseline,1,0,0.0,1,1,1.0,0.667,2.0,7.0,4687.0,6.1
+Reflection,1,0,0.0,1,1,1.0,0.667,2.5,38.0,37078.0,33.85
+ReAct,0,0,,2,2,1.0,0.667,2.5,14.0,16510.0,32.21
+ToT,0,0,,2,2,1.0,0.667,2.0,35.0,35291.0,37.86

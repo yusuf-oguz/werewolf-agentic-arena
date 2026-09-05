@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Game #1 — Werewolf Arena</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        background: #1a1a2e;
+        color: #e0e0e0;
+        padding: 24px;
+        line-height: 1.5;
+    }
+    h1 { color: #f0c040; margin-bottom: 8px; font-size: 1.6rem; }
+    h2 { color: #aaa; font-size: 1.1rem; margin-bottom: 20px; font-weight: 400; }
+    h3 { color: #f0c040; margin: 20px 0 10px; font-size: 1.1rem; }
+    h4 { color: #ccc; font-size: 0.9rem; margin: 12px 0 6px; text-transform: uppercase;
+         letter-spacing: 0.05em; }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+    .summary-card {
+        background: #16213e;
+        border-radius: 8px;
+        padding: 14px 18px;
+        border-left: 4px solid #f0c040;
+    }
+    .summary-card .label { font-size: 0.75rem; color: #888; text-transform: uppercase;
+                           letter-spacing: 0.06em; }
+    .summary-card .value { font-size: 1.3rem; color: #f0f0f0; font-weight: 600; margin-top: 4px; }
+
+    .players-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 10px;
+        margin-bottom: 28px;
+    }
+    .player-card {
+        background: #16213e;
+        border-radius: 8px;
+        padding: 10px 14px;
+        border-top: 3px solid var(--role-color);
+        position: relative;
+    }
+    .player-card.eliminated { opacity: 0.45; }
+    .player-card .pname { font-weight: 600; font-size: 1rem; }
+    .player-card .prole { font-size: 0.78rem; margin-top: 2px; color: var(--role-color); }
+    .player-card .ppattern { font-size: 0.75rem; color: #888; margin-top: 2px; }
+    .elim-badge {
+        position: absolute; top: 8px; right: 10px;
+        font-size: 0.65rem; background: #c0392b; color: #fff;
+        border-radius: 4px; padding: 1px 5px;
+    }
+
+    .round-block {
+        background: #16213e;
+        border-radius: 10px;
+        padding: 18px 20px;
+        margin-bottom: 20px;
+        border: 1px solid #2a2a4a;
+    }
+    .phase-label {
+        display: inline-block;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+    .phase-night { background: #1a1a3e; color: #88aaff; border: 1px solid #336; }
+    .phase-day   { background: #3e2a00; color: #ffcc66; border: 1px solid #663300; }
+
+    .speech-item {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 12px;
+        align-items: flex-start;
+    }
+    .speech-avatar {
+        width: 34px; height: 34px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+        border: 2px solid var(--role-color);
+        color: var(--role-color);
+        background: #1a1a2e;
+    }
+    .speech-body { flex: 1; }
+    .speech-meta { font-size: 0.75rem; color: #888; margin-bottom: 3px; }
+    .speech-meta .sname { color: #ddd; font-weight: 600; }
+    .speech-text {
+        background: #0f1120;
+        border-left: 3px solid var(--role-color);
+        padding: 8px 12px;
+        border-radius: 0 6px 6px 0;
+        font-size: 0.88rem;
+        color: #ccc;
+    }
+
+    .vote-row {
+        display: flex; gap: 8px; align-items: center;
+        font-size: 0.85rem; margin-bottom: 6px;
+    }
+    .vote-chip {
+        background: #2a2a4a; border-radius: 4px; padding: 3px 8px;
+        font-size: 0.8rem;
+    }
+    .vote-arrow { color: #888; }
+
+    .elim-item {
+        display: flex; align-items: center; gap: 10px;
+        background: #3a1010; border-radius: 6px;
+        padding: 8px 14px; margin-top: 10px;
+        font-size: 0.87rem; border: 1px solid #5a1010;
+    }
+    .elim-icon { font-size: 1.1rem; }
+
+    details { margin-top: 10px; }
+    details > summary {
+        cursor: pointer;
+        font-size: 0.8rem;
+        color: #778;
+        padding: 4px 0;
+        user-select: none;
+        list-style: none;
+    }
+    details > summary::before { content: '+ '; }
+    details[open] > summary::before { content: '- '; }
+    details > summary:hover { color: #aab; }
+
+    .call-log-table {
+        width: 100%; border-collapse: collapse; margin-top: 8px;
+        font-size: 0.78rem;
+    }
+    .call-log-table th {
+        text-align: left; padding: 4px 8px;
+        background: #0f1120; color: #888;
+        border-bottom: 1px solid #2a2a4a;
+    }
+    .call-log-table td {
+        padding: 4px 8px; border-bottom: 1px solid #1e1e3a; color: #bbb;
+    }
+    .call-log-table tr:hover td { background: #1a1a30; }
+
+    .pattern-badge {
+        display: inline-block; font-size: 0.7rem; padding: 1px 6px;
+        border-radius: 3px; font-weight: 600; margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .api-section {
+        background: #16213e; border-radius: 10px; padding: 18px 20px;
+        margin-bottom: 20px; border: 1px solid #2a2a4a;
+    }
+    .api-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px; margin-top: 10px;
+    }
+    .api-card {
+        background: #0f1120; border-radius: 6px; padding: 10px 14px;
+        border-left: 3px solid var(--pat-color);
+    }
+    .api-card .pat-name { font-size: 0.8rem; font-weight: 600; color: var(--pat-color); }
+    .api-card .api-stat { font-size: 0.75rem; color: #888; margin-top: 3px; }
+
+    hr { border: none; border-top: 1px solid #2a2a4a; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+
+<h1>Werewolf Arena — Game #1</h1>
+<h2>2026-05-18T02:51:37</h2>
+
+<div class="summary-grid">
+
+  <div class="summary-card" style="border-color:#27ae60">
+    <div class="label">Outcome</div>
+    <div class="value" style="color:#27ae60">Village wins</div>
+  </div>
+  <div class="summary-card">
+    <div class="label">Rounds</div>
+    <div class="value">3</div>
+  </div>
+  <div class="summary-card">
+    <div class="label">Detection Accuracy</div>
+    <div class="value">66.7%</div>
+  </div>
+  <div class="summary-card">
+    <div class="label">Total API Calls</div>
+    <div class="value">94</div>
+  </div>
+  <div class="summary-card">
+    <div class="label">Total Tokens</div>
+    <div class="value">93,566</div>
+  </div>
+  <div class="summary-card">
+    <div class="label">Total Time</div>
+    <div class="value">110.0s</div>
+  </div>
+
+</div>
+<h3>Players</h3>
+<div class="players-grid">
+
+  <div class="player-card eliminated" style="--role-color:#c0392b">
+    <span class="elim-badge">R1 voted out</span>
+    <div class="pname">Alice</div>
+    <div class="prole">Werewolf</div>
+    <div class="ppattern"><span class="pattern-badge" style="background:#7f8c8d22;color:#7f8c8d;border:1px solid #7f8c8d44">Baseline</span></div>
+  </div>
+
+  <div class="player-card eliminated" style="--role-color:#c0392b">
+    <span class="elim-badge">R3 voted out</span>
+    <div class="pname">Bob</div>
+    <div class="prole">Werewolf</div>
+    <div class="ppattern"><span class="pattern-badge" style="background:#e67e2222;color:#e67e22;border:1px solid #e67e2244">Reflection</span></div>
+  </div>
+
+  <div class="player-card eliminated" style="--role-color:#8e44ad">
+    <span class="elim-badge">R2 killed</span>
+    <div class="pname">Carol</div>
+    <div class="prole">Seer</div>
+    <div class="ppattern"><span class="pattern-badge" style="background:#16a08522;color:#16a085;border:1px solid #16a08544">ReAct</span></div>
+  </div>
+
+  <div class="player-card eliminated" style="--role-color:#27ae60">
+    <span class="elim-badge">R1 killed</span>
+    <div class="pname">Dave</div>
+    <div class="prole">Doctor</div>
+    <div class="ppattern"><span class="pattern-badge" style="background:#8e44ad22;color:#8e44ad;border:1px solid #8e44ad44">ToT</span></div>
+  </div>
+
+  <div class="player-card eliminated" style="--role-color:#2980b9">
+    <span class="elim-badge">R3 killed</span>
+    <div class="pname">Eve</div>
+    <div class="prole">Villager</div>
+    <div class="ppattern"><span class="pattern-badge" style="background:#7f8c8d22;color:#7f8c8d;border:1px solid #7f8c8d44">Baseline2</span></div>
+  </div>
+
+  <div class="player-card eliminated" style="--role-color:#2980b9">
+    <span class="elim-badge">R2 voted out</span>
+    <div class="pname">Frank</div>
+    <div class="prole">Villager</div>
+    <div class="ppattern"><span class="pattern-badge" style="background:#e67e2222;color:#e67e22;border:1px solid #e67e2244">Reflection2</span></div>
+  </div>
+
+  <div class="player-card" style="--role-color:#2980b9">
+    
+    <div class="pname">Grace</div>
+    <div class="prole">Villager</div>
+    <div class="ppattern"><span class="pattern-badge" style="background:#16a08522;color:#16a085;border:1px solid #16a08544">ReAct2</span></div>
+  </div>
+
+  <div class="player-card" style="--role-color:#2980b9">
+    
+    <div class="pname">Hank</div>
+    <div class="prole">Villager</div>
+    <div class="ppattern"><span class="pattern-badge" style="background:#8e44ad22;color:#8e44ad;border:1px solid #8e44ad44">ToT2</span></div>
+  </div>
+</div>
+<hr>
+<h3>Game Timeline</h3>
+<div class="round-block">
+<h3 style="margin-top:0">Round 1</h3>
+<span class="phase-label phase-night">Night</span>
+
+  <div class="elim-item">
+    <span class="elim-icon">&#128565;</span>
+    <span><strong>Dave</strong> (Doctor) was killed by werewolves</span>
+  </div>
+<br><span class="phase-label phase-day">Day — Discussion</span>
+
+  <div class="speech-item" style="--role-color:#2980b9">
+    <div class="speech-avatar">EV</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Eve</span>
+        &nbsp;·&nbsp;Villager
+        <span class="pattern-badge" style="background:#7f8c8d22;color:#7f8c8d;border:1px solid #7f8c8d44">Baseline2</span>
+      </div>
+      <div class="speech-text">I’m deeply concerned about Dave’s elimination last night; he was our doctor and losing him puts us at a significant disadvantage. We need to stay vigilant and work together to identify the werewolves among us. I suspect Alice and Bob seem a bit too quiet today, which could be a tactic to avoid suspicion. Let’s focus our discussions on them and see if we notice anything odd in their behavior.</div>
+    </div>
+  </div>
+
+  <div class="speech-item" style="--role-color:#c0392b">
+    <div class="speech-avatar">AL</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Alice</span>
+        &nbsp;·&nbsp;Werewolf
+        <span class="pattern-badge" style="background:#7f8c8d22;color:#7f8c8d;border:1px solid #7f8c8d44">Baseline</span>
+      </div>
+      <div class="speech-text">I understand Eve&#x27;s concern following Dave&#x27;s elimination; it&#x27;s unsettling to lose our doctor this early. I think it’s important for us all to stay united and focus on identifying the real threats. I’m just as worried as the rest of you and believe we should analyze everyone’s behavior closely, not just target those who may be quieter. Let’s keep our discussions open and thorough so we can make the best decisions together.</div>
+    </div>
+  </div>
+
+  <div class="speech-item" style="--role-color:#2980b9">
+    <div class="speech-avatar">FR</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Frank</span>
+        &nbsp;·&nbsp;Villager
+        <span class="pattern-badge" style="background:#e67e2222;color:#e67e22;border:1px solid #e67e2244">Reflection2</span>
+      </div>
+      <div class="speech-text">I want to echo Eve’s concern about our doctor’s elimination; it puts us at a serious disadvantage. I agree that Alice and Bob’s quietness could be worth noting, but we shouldn&#x27;t overlook others as well. Let’s keep a close watch and hold open discussions. We need to work together to identify the werewolves before we lose more of our village.</div>
+    </div>
+  </div>
+
+  <div class="speech-item" style="--role-color:#2980b9">
+    <div class="speech-avatar">GR</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Grace</span>
+        &nbsp;·&nbsp;Villager
+        <span class="pattern-badge" style="background:#16a08522;color:#16a085;border:1px solid #16a08544">ReAct2</span>
+      </div>
+      <div class="speech-text">I agree with the need to stay vigilant after losing our doctor. While it&#x27;s easy to be suspicious of those who speak less, let&#x27;s ensure we scrutinize everyone&#x27;s actions carefully. Open communication will be crucial in identifying the werewolves among us.</div>
+    </div>
+  </div>
+
+  <div class="speech-item" style="--role-color:#8e44ad">
+    <div class="speech-avatar">CA</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Carol</span>
+        &nbsp;·&nbsp;Seer
+        <span class="pattern-badge" style="background:#16a08522;color:#16a085;border:1px solid #16a08544">ReAct</span>
+      </div>
+      <div class="speech-text">I believe we should take a closer look at Alice; her vocal assurances appear to be a smokescreen. We need to trust our instincts and gather evidence against those who may be manipulating our discussions. Let&#x27;s remain vigilant and focus on clear behaviors that raise suspicion.</div>
+    </div>
+  </div>
+
+  <div class="speech-item" style="--role-color:#2980b9">
+    <div class="speech-avatar">HA</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Hank</span>
+        &nbsp;·&nbsp;Villager
+        <span class="pattern-badge" style="background:#8e44ad22;color:#8e44ad;border:1px solid #8e44ad44">ToT2</span>
+      </div>
+      <div class="speech-text">I appreciate everyone’s insights and concerns regarding Dave’s elimination; it’s crucial that we come together as a village right now. Instead of singling out individuals based on their quietness, I believe we should collaboratively analyze everyone’s actions and discussions. By focusing on the patterns we observe together, we can make more informed decisions and help identify the werewolves lurking among us. Let’s stay united and vigilant!</div>
+    </div>
+  </div>
+
+  <div class="speech-item" style="--role-color:#c0392b">
+    <div class="speech-avatar">BO</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Bob</span>
+        &nbsp;·&nbsp;Werewolf
+        <span class="pattern-badge" style="background:#e67e2222;color:#e67e22;border:1px solid #e67e2244">Reflection</span>
+      </div>
+      <div class="speech-text">I completely agree that losing our doctor puts us at a disadvantage, and I share the concern for our remaining safety. While it’s natural to look for those who are quieter, I think we should focus on the actions and behaviors of everyone, not just a few individuals. We must remain united and vigilant, as each of us has a stake in the survival of the village. Let’s work together to identify the real threats among us!</div>
+    </div>
+  </div>
+<br><span class="phase-label phase-day">Day — Voting</span><br>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#c0392b">Alice</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#2980b9">Eve</span>
+  </div>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#c0392b">Bob</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#2980b9">Eve</span>
+  </div>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#8e44ad">Carol</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#c0392b">Alice</span>
+  </div>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#2980b9">Eve</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#c0392b">Alice</span>
+  </div>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#2980b9">Frank</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#c0392b">Alice</span>
+  </div>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#2980b9">Grace</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#8e44ad">Carol</span>
+  </div>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#2980b9">Hank</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#c0392b">Alice</span>
+  </div>
+<div style="margin-top:8px;font-size:0.8rem;color:#888">Tally: 
+<span style="color:#c0392b">Alice</span> ×4 &nbsp;|&nbsp; <span style="color:#2980b9">Eve</span> ×2 &nbsp;|&nbsp; <span style="color:#8e44ad">Carol</span> ×1
+</div>
+
+  <div class="elim-item" style="margin-top:10px">
+    <span class="elim-icon">&#9993;</span>
+    <span><strong>Alice</strong> (Werewolf) was voted out</span>
+  </div>
+</div>
+<div class="round-block">
+<h3 style="margin-top:0">Round 2</h3>
+<span class="phase-label phase-night">Night</span>
+
+  <div class="elim-item">
+    <span class="elim-icon">&#128565;</span>
+    <span><strong>Carol</strong> (Seer) was killed by werewolves</span>
+  </div>
+<br><span class="phase-label phase-day">Day — Discussion</span>
+
+  <div class="speech-item" style="--role-color:#2980b9">
+    <div class="speech-avatar">FR</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Frank</span>
+        &nbsp;·&nbsp;Villager
+        <span class="pattern-badge" style="background:#e67e2222;color:#e67e22;border:1px solid #e67e2244">Reflection2</span>
+      </div>
+      <div class="speech-text">I appreciate everyone&#x27;s insights, but we need to focus our attention on collaborating effectively to analyze the actions of those who remain. While Alice was a werewolf, we should remain vigilant about potential threats among us. Let’s discuss Grace, Hank, and Bob&#x27;s behaviors closely to identify any signs of deceit. By working together, we can ensure the safety of our village and eliminate any remaining werewolves.</div>
+    </div>
+  </div>
+
+  <div class="speech-item" style="--role-color:#2980b9">
+    <div class="speech-avatar">GR</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Grace</span>
+        &nbsp;·&nbsp;Villager
+        <span class="pattern-badge" style="background:#16a08522;color:#16a085;border:1px solid #16a08544">ReAct2</span>
+      </div>
+      <div class="speech-text">I believe we need to take a closer look at Frank’s recent comments, especially since they seem to deflect suspicion onto other players without substantial evidence. Let’s keep our discussions open and focus on identifying real threats among us, as losing our roles has left us vulnerable.</div>
+    </div>
+  </div>
+
+  <div class="speech-item" style="--role-color:#2980b9">
+    <div class="speech-avatar">HA</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Hank</span>
+        &nbsp;·&nbsp;Villager
+        <span class="pattern-badge" style="background:#8e44ad22;color:#8e44ad;border:1px solid #8e44ad44">ToT2</span>
+      </div>
+      <div class="speech-text">Frank, your attempt to deflect suspicion onto Grace, Hank, and Bob without any substantial evidence is highly concerning. It feels like classic werewolf behavior—trying to shift the blame rather than focus on real threats. We need to scrutinize your actions more closely; it seems you might be trying to protect a fellow werewolf among us. I urge everyone to join me in voting for Frank and eliminate this danger!</div>
+    </div>
+  </div>
+
+  <div class="speech-item" style="--role-color:#2980b9">
+    <div class="speech-avatar">EV</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Eve</span>
+        &nbsp;·&nbsp;Villager
+        <span class="pattern-badge" style="background:#7f8c8d22;color:#7f8c8d;border:1px solid #7f8c8d44">Baseline2</span>
+      </div>
+      <div class="speech-text">I think it&#x27;s important to consider Frank&#x27;s behavior. His attempt to shift the focus onto Grace, Hank, and Bob without concrete evidence feels suspicious. We need to be cautious of deflectors when we are already vulnerable, especially after losing both our doctor and seer. I suggest we pay close attention to Frank and consider voting him out to eliminate a potential threat.</div>
+    </div>
+  </div>
+
+  <div class="speech-item" style="--role-color:#c0392b">
+    <div class="speech-avatar">BO</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Bob</span>
+        &nbsp;·&nbsp;Werewolf
+        <span class="pattern-badge" style="background:#e67e2222;color:#e67e22;border:1px solid #e67e2244">Reflection</span>
+      </div>
+      <div class="speech-text">I understand the concerns about the suspicious behavior among us, and I believe it&#x27;s important for us to collaborate closely in our observations. While we all have valid points, I feel we should take a collective approach to analyze everyone&#x27;s actions, including Frank&#x27;s. Let&#x27;s share our thoughts openly and ensure we are making informed decisions together to identify the real threats within our group.</div>
+    </div>
+  </div>
+<br><span class="phase-label phase-day">Day — Voting</span><br>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#c0392b">Bob</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#2980b9">Frank</span>
+  </div>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#2980b9">Eve</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#2980b9">Frank</span>
+  </div>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#2980b9">Frank</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#2980b9">Hank</span>
+  </div>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#2980b9">Grace</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#2980b9">Frank</span>
+  </div>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#2980b9">Hank</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#2980b9">Frank</span>
+  </div>
+<div style="margin-top:8px;font-size:0.8rem;color:#888">Tally: 
+<span style="color:#2980b9">Frank</span> ×4 &nbsp;|&nbsp; <span style="color:#2980b9">Hank</span> ×1
+</div>
+
+  <div class="elim-item" style="margin-top:10px">
+    <span class="elim-icon">&#9993;</span>
+    <span><strong>Frank</strong> (Villager) was voted out</span>
+  </div>
+</div>
+<div class="round-block">
+<h3 style="margin-top:0">Round 3</h3>
+<span class="phase-label phase-night">Night</span>
+
+  <div class="elim-item">
+    <span class="elim-icon">&#128565;</span>
+    <span><strong>Eve</strong> (Villager) was killed by werewolves</span>
+  </div>
+<br><span class="phase-label phase-day">Day — Discussion</span>
+
+  <div class="speech-item" style="--role-color:#2980b9">
+    <div class="speech-avatar">HA</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Hank</span>
+        &nbsp;·&nbsp;Villager
+        <span class="pattern-badge" style="background:#8e44ad22;color:#8e44ad;border:1px solid #8e44ad44">ToT2</span>
+      </div>
+      <div class="speech-text">I believe it’s vital that we all stay engaged and share our observations about each other’s behaviors. While it’s natural to focus on specific individuals, let’s take a collaborative approach to analyze everyone’s actions. By doing so, we can collectively build a clearer picture of who might still be posing a threat. Together, we can ensure the safety of our village and make an informed decision about our next vote.</div>
+    </div>
+  </div>
+
+  <div class="speech-item" style="--role-color:#c0392b">
+    <div class="speech-avatar">BO</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Bob</span>
+        &nbsp;·&nbsp;Werewolf
+        <span class="pattern-badge" style="background:#e67e2222;color:#e67e22;border:1px solid #e67e2244">Reflection</span>
+      </div>
+      <div class="speech-text">I think it’s crucial that we analyze everyone&#x27;s actions rather than focusing on a single individual. While Frank’s attempts to deflect suspicion might raise eyebrows, we should remain vigilant about all players, including our own behaviors. Let&#x27;s collaborate and share our observations openly, ensuring we make informed decisions to protect our village from any remaining threats.</div>
+    </div>
+  </div>
+
+  <div class="speech-item" style="--role-color:#2980b9">
+    <div class="speech-avatar">GR</div>
+    <div class="speech-body">
+      <div class="speech-meta">
+        <span class="sname">Grace</span>
+        &nbsp;·&nbsp;Villager
+        <span class="pattern-badge" style="background:#16a08522;color:#16a085;border:1px solid #16a08544">ReAct2</span>
+      </div>
+      <div class="speech-text">I believe we need to focus our attention on Frank. His attempts to shift blame and deflect scrutiny onto others without solid evidence raise red flags. We can’t afford to be misled; I urge you all to join me in voting Frank out to protect our village from potential danger.</div>
+    </div>
+  </div>
+<br><span class="phase-label phase-day">Day — Voting</span><br>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#c0392b">Bob</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#2980b9">Grace</span>
+  </div>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#2980b9">Grace</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#c0392b">Bob</span>
+  </div>
+
+  <div class="vote-row">
+    <span class="vote-chip" style="color:#2980b9">Hank</span>
+    <span class="vote-arrow">&#8594;</span>
+    <span class="vote-chip" style="color:#c0392b">Bob</span>
+  </div>
+<div style="margin-top:8px;font-size:0.8rem;color:#888">Tally: 
+<span style="color:#c0392b">Bob</span> ×2 &nbsp;|&nbsp; <span style="color:#2980b9">Grace</span> ×1
+</div>
+
+  <div class="elim-item" style="margin-top:10px">
+    <span class="elim-icon">&#9993;</span>
+    <span><strong>Bob</strong> (Werewolf) was voted out</span>
+  </div>
+</div>
+<hr>
+<div class="api-section">
+<h3 style="margin-top:0">API Usage by Pattern</h3>
+<div class="api-grid">
+
+  <div class="api-card" style="--pat-color:#16a085">
+    <div class="pat-name">ReAct</div>
+    <div class="api-stat">Calls: 14</div>
+    <div class="api-stat">Tokens: 16,510</div>
+    <div class="api-stat">Time: 32.2s</div>
+  </div>
+
+  <div class="api-card" style="--pat-color:#8e44ad">
+    <div class="pat-name">ToT</div>
+    <div class="api-stat">Calls: 35</div>
+    <div class="api-stat">Tokens: 35,291</div>
+    <div class="api-stat">Time: 37.9s</div>
+  </div>
+
+  <div class="api-card" style="--pat-color:#7f8c8d">
+    <div class="pat-name">Baseline</div>
+    <div class="api-stat">Calls: 7</div>
+    <div class="api-stat">Tokens: 4,687</div>
+    <div class="api-stat">Time: 6.1s</div>
+  </div>
+
+  <div class="api-card" style="--pat-color:#e67e22">
+    <div class="pat-name">Reflection</div>
+    <div class="api-stat">Calls: 38</div>
+    <div class="api-stat">Tokens: 37,078</div>
+    <div class="api-stat">Time: 33.9s</div>
+  </div>
+</div>
+
+  <details style="margin-top:16px">
+    <summary>Full Call Log (94 entries)</summary>
+    <table class="call-log-table">
+      <tr>
+        <th>#</th><th>Caller</th>
+        <th>Prompt tk</th><th>Completion tk</th><th>Total tk</th><th>Time (s)</th>
+      </tr>
+
+      <tr>
+        <td>1</td>
+        <td><span style="color:#16a085">Carol</span>
+            <span style="color:#556">[ReAct]</span>
+            .action.step1</td>
+        <td>332</td>
+        <td>125</td>
+        <td>457</td>
+        <td>2.93</td>
+      </tr>
+
+      <tr>
+        <td>2</td>
+        <td><span style="color:#8e44ad">Dave</span>
+            <span style="color:#556">[ToT]</span>
+            .night.strategies</td>
+        <td>196</td>
+        <td>86</td>
+        <td>282</td>
+        <td>1.53</td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td><span style="color:#8e44ad">Dave</span>
+            <span style="color:#556">[ToT]</span>
+            .night.branch3</td>
+        <td>202</td>
+        <td>1</td>
+        <td>203</td>
+        <td>0.61</td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td><span style="color:#8e44ad">Dave</span>
+            <span style="color:#556">[ToT]</span>
+            .night.branch2</td>
+        <td>194</td>
+        <td>1</td>
+        <td>195</td>
+        <td>0.62</td>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td><span style="color:#8e44ad">Dave</span>
+            <span style="color:#556">[ToT]</span>
+            .night.branch1</td>
+        <td>195</td>
+        <td>1</td>
+        <td>196</td>
+        <td>0.67</td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td><span style="color:#8e44ad">Dave</span>
+            <span style="color:#556">[ToT]</span>
+            .night.eval</td>
+        <td>193</td>
+        <td>4</td>
+        <td>197</td>
+        <td>0.66</td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td><span style="color:#7f8c8d">Alice</span>
+            <span style="color:#556">[Baseline]</span>
+            .night</td>
+        <td>192</td>
+        <td>1</td>
+        <td>193</td>
+        <td>0.47</td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .night.draft</td>
+        <td>189</td>
+        <td>2</td>
+        <td>191</td>
+        <td>0.55</td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .night.critique</td>
+        <td>202</td>
+        <td>5</td>
+        <td>207</td>
+        <td>0.61</td>
+      </tr>
+
+      <tr>
+        <td>10</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .night.revise</td>
+        <td>189</td>
+        <td>1</td>
+        <td>190</td>
+        <td>0.56</td>
+      </tr>
+
+      <tr>
+        <td>11</td>
+        <td><span style="color:#7f8c8d">Eve</span>
+            <span style="color:#556">[Baseline]</span>
+            .speak</td>
+        <td>203</td>
+        <td>80</td>
+        <td>283</td>
+        <td>1.38</td>
+      </tr>
+
+      <tr>
+        <td>12</td>
+        <td><span style="color:#7f8c8d">Alice</span>
+            <span style="color:#556">[Baseline]</span>
+            .speak</td>
+        <td>305</td>
+        <td>84</td>
+        <td>389</td>
+        <td>1.23</td>
+      </tr>
+
+      <tr>
+        <td>13</td>
+        <td><span style="color:#e67e22">Frank</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.draft</td>
+        <td>379</td>
+        <td>72</td>
+        <td>451</td>
+        <td>1.33</td>
+      </tr>
+
+      <tr>
+        <td>14</td>
+        <td><span style="color:#e67e22">Frank</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.critique</td>
+        <td>482</td>
+        <td>3</td>
+        <td>485</td>
+        <td>0.52</td>
+      </tr>
+
+      <tr>
+        <td>15</td>
+        <td><span style="color:#16a085">Grace</span>
+            <span style="color:#556">[ReAct]</span>
+            .speech.step1</td>
+        <td>597</td>
+        <td>96</td>
+        <td>693</td>
+        <td>1.70</td>
+      </tr>
+
+      <tr>
+        <td>16</td>
+        <td><span style="color:#16a085">Carol</span>
+            <span style="color:#556">[ReAct]</span>
+            .speech.step1</td>
+        <td>673</td>
+        <td>102</td>
+        <td>775</td>
+        <td>1.89</td>
+      </tr>
+
+      <tr>
+        <td>17</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.strategies</td>
+        <td>588</td>
+        <td>111</td>
+        <td>699</td>
+        <td>1.74</td>
+      </tr>
+
+      <tr>
+        <td>18</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.branch1</td>
+        <td>599</td>
+        <td>68</td>
+        <td>667</td>
+        <td>1.23</td>
+      </tr>
+
+      <tr>
+        <td>19</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.branch3</td>
+        <td>603</td>
+        <td>72</td>
+        <td>675</td>
+        <td>1.43</td>
+      </tr>
+
+      <tr>
+        <td>20</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.branch2</td>
+        <td>601</td>
+        <td>81</td>
+        <td>682</td>
+        <td>1.43</td>
+      </tr>
+
+      <tr>
+        <td>21</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.eval</td>
+        <td>816</td>
+        <td>4</td>
+        <td>820</td>
+        <td>0.61</td>
+      </tr>
+
+      <tr>
+        <td>22</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.draft</td>
+        <td>655</td>
+        <td>87</td>
+        <td>742</td>
+        <td>2.00</td>
+      </tr>
+
+      <tr>
+        <td>23</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.critique</td>
+        <td>773</td>
+        <td>3</td>
+        <td>776</td>
+        <td>0.66</td>
+      </tr>
+
+      <tr>
+        <td>24</td>
+        <td><span style="color:#7f8c8d">Alice</span>
+            <span style="color:#556">[Baseline]</span>
+            .vote</td>
+        <td>747</td>
+        <td>2</td>
+        <td>749</td>
+        <td>0.37</td>
+      </tr>
+
+      <tr>
+        <td>25</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.draft</td>
+        <td>755</td>
+        <td>2</td>
+        <td>757</td>
+        <td>0.65</td>
+      </tr>
+
+      <tr>
+        <td>26</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.critique</td>
+        <td>774</td>
+        <td>5</td>
+        <td>779</td>
+        <td>0.62</td>
+      </tr>
+
+      <tr>
+        <td>27</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.revise</td>
+        <td>754</td>
+        <td>2</td>
+        <td>756</td>
+        <td>0.82</td>
+      </tr>
+
+      <tr>
+        <td>28</td>
+        <td><span style="color:#16a085">Carol</span>
+            <span style="color:#556">[ReAct]</span>
+            .vote.step1</td>
+        <td>919</td>
+        <td>77</td>
+        <td>996</td>
+        <td>1.70</td>
+      </tr>
+
+      <tr>
+        <td>29</td>
+        <td><span style="color:#7f8c8d">Eve</span>
+            <span style="color:#556">[Baseline]</span>
+            .vote</td>
+        <td>756</td>
+        <td>1</td>
+        <td>757</td>
+        <td>0.55</td>
+      </tr>
+
+      <tr>
+        <td>30</td>
+        <td><span style="color:#e67e22">Frank</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.draft</td>
+        <td>758</td>
+        <td>1</td>
+        <td>759</td>
+        <td>0.52</td>
+      </tr>
+
+      <tr>
+        <td>31</td>
+        <td><span style="color:#e67e22">Frank</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.critique</td>
+        <td>777</td>
+        <td>5</td>
+        <td>782</td>
+        <td>1.23</td>
+      </tr>
+
+      <tr>
+        <td>32</td>
+        <td><span style="color:#e67e22">Frank</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.revise</td>
+        <td>757</td>
+        <td>1</td>
+        <td>758</td>
+        <td>0.92</td>
+      </tr>
+
+      <tr>
+        <td>33</td>
+        <td><span style="color:#16a085">Grace</span>
+            <span style="color:#556">[ReAct]</span>
+            .vote.step1</td>
+        <td>908</td>
+        <td>108</td>
+        <td>1016</td>
+        <td>1.67</td>
+      </tr>
+
+      <tr>
+        <td>34</td>
+        <td><span style="color:#16a085">Grace</span>
+            <span style="color:#556">[ReAct]</span>
+            .vote.step2</td>
+        <td>1062</td>
+        <td>117</td>
+        <td>1179</td>
+        <td>1.81</td>
+      </tr>
+
+      <tr>
+        <td>35</td>
+        <td><span style="color:#16a085">Grace</span>
+            <span style="color:#556">[ReAct]</span>
+            .vote.step3</td>
+        <td>1238</td>
+        <td>71</td>
+        <td>1309</td>
+        <td>1.43</td>
+      </tr>
+
+      <tr>
+        <td>36</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.strategies</td>
+        <td>789</td>
+        <td>112</td>
+        <td>901</td>
+        <td>1.74</td>
+      </tr>
+
+      <tr>
+        <td>37</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.branch1</td>
+        <td>798</td>
+        <td>1</td>
+        <td>799</td>
+        <td>0.52</td>
+      </tr>
+
+      <tr>
+        <td>38</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.branch3</td>
+        <td>803</td>
+        <td>2</td>
+        <td>805</td>
+        <td>0.53</td>
+      </tr>
+
+      <tr>
+        <td>39</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.branch2</td>
+        <td>795</td>
+        <td>1</td>
+        <td>796</td>
+        <td>0.57</td>
+      </tr>
+
+      <tr>
+        <td>40</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.eval</td>
+        <td>785</td>
+        <td>4</td>
+        <td>789</td>
+        <td>0.46</td>
+      </tr>
+
+      <tr>
+        <td>41</td>
+        <td><span style="color:#16a085">Carol</span>
+            <span style="color:#556">[ReAct]</span>
+            .action.step1</td>
+        <td>953</td>
+        <td>180</td>
+        <td>1133</td>
+        <td>3.11</td>
+      </tr>
+
+      <tr>
+        <td>42</td>
+        <td><span style="color:#16a085">Carol</span>
+            <span style="color:#556">[ReAct]</span>
+            .action.step2</td>
+        <td>1219</td>
+        <td>121</td>
+        <td>1340</td>
+        <td>3.03</td>
+      </tr>
+
+      <tr>
+        <td>43</td>
+        <td><span style="color:#16a085">Carol</span>
+            <span style="color:#556">[ReAct]</span>
+            .action.step3</td>
+        <td>1371</td>
+        <td>76</td>
+        <td>1447</td>
+        <td>1.94</td>
+      </tr>
+
+      <tr>
+        <td>44</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .night.draft</td>
+        <td>795</td>
+        <td>2</td>
+        <td>797</td>
+        <td>1.23</td>
+      </tr>
+
+      <tr>
+        <td>45</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .night.critique</td>
+        <td>812</td>
+        <td>5</td>
+        <td>817</td>
+        <td>0.61</td>
+      </tr>
+
+      <tr>
+        <td>46</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .night.revise</td>
+        <td>795</td>
+        <td>1</td>
+        <td>796</td>
+        <td>0.51</td>
+      </tr>
+
+      <tr>
+        <td>47</td>
+        <td><span style="color:#e67e22">Frank</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.draft</td>
+        <td>809</td>
+        <td>81</td>
+        <td>890</td>
+        <td>4.30</td>
+      </tr>
+
+      <tr>
+        <td>48</td>
+        <td><span style="color:#e67e22">Frank</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.critique</td>
+        <td>921</td>
+        <td>20</td>
+        <td>941</td>
+        <td>0.72</td>
+      </tr>
+
+      <tr>
+        <td>49</td>
+        <td><span style="color:#e67e22">Frank</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.revise</td>
+        <td>893</td>
+        <td>79</td>
+        <td>972</td>
+        <td>1.43</td>
+      </tr>
+
+      <tr>
+        <td>50</td>
+        <td><span style="color:#e67e22">Frank</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.critique</td>
+        <td>919</td>
+        <td>3</td>
+        <td>922</td>
+        <td>0.61</td>
+      </tr>
+
+      <tr>
+        <td>51</td>
+        <td><span style="color:#16a085">Grace</span>
+            <span style="color:#556">[ReAct]</span>
+            .speech.step1</td>
+        <td>1041</td>
+        <td>141</td>
+        <td>1182</td>
+        <td>2.26</td>
+      </tr>
+
+      <tr>
+        <td>52</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.strategies</td>
+        <td>984</td>
+        <td>95</td>
+        <td>1079</td>
+        <td>2.05</td>
+      </tr>
+
+      <tr>
+        <td>53</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.branch2</td>
+        <td>989</td>
+        <td>79</td>
+        <td>1068</td>
+        <td>1.54</td>
+      </tr>
+
+      <tr>
+        <td>54</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.branch3</td>
+        <td>994</td>
+        <td>80</td>
+        <td>1074</td>
+        <td>1.54</td>
+      </tr>
+
+      <tr>
+        <td>55</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.branch1</td>
+        <td>992</td>
+        <td>83</td>
+        <td>1075</td>
+        <td>1.84</td>
+      </tr>
+
+      <tr>
+        <td>56</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.eval</td>
+        <td>1233</td>
+        <td>4</td>
+        <td>1237</td>
+        <td>0.82</td>
+      </tr>
+
+      <tr>
+        <td>57</td>
+        <td><span style="color:#7f8c8d">Eve</span>
+            <span style="color:#556">[Baseline]</span>
+            .speak</td>
+        <td>1042</td>
+        <td>73</td>
+        <td>1115</td>
+        <td>1.33</td>
+      </tr>
+
+      <tr>
+        <td>58</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.draft</td>
+        <td>1129</td>
+        <td>70</td>
+        <td>1199</td>
+        <td>1.43</td>
+      </tr>
+
+      <tr>
+        <td>59</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.critique</td>
+        <td>1230</td>
+        <td>14</td>
+        <td>1244</td>
+        <td>0.62</td>
+      </tr>
+
+      <tr>
+        <td>60</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.revise</td>
+        <td>1196</td>
+        <td>71</td>
+        <td>1267</td>
+        <td>1.43</td>
+      </tr>
+
+      <tr>
+        <td>61</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.critique</td>
+        <td>1231</td>
+        <td>3</td>
+        <td>1234</td>
+        <td>0.51</td>
+      </tr>
+
+      <tr>
+        <td>62</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.draft</td>
+        <td>1198</td>
+        <td>1</td>
+        <td>1199</td>
+        <td>0.51</td>
+      </tr>
+
+      <tr>
+        <td>63</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.critique</td>
+        <td>1221</td>
+        <td>5</td>
+        <td>1226</td>
+        <td>0.52</td>
+      </tr>
+
+      <tr>
+        <td>64</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.revise</td>
+        <td>1197</td>
+        <td>1</td>
+        <td>1198</td>
+        <td>0.55</td>
+      </tr>
+
+      <tr>
+        <td>65</td>
+        <td><span style="color:#7f8c8d">Eve</span>
+            <span style="color:#556">[Baseline]</span>
+            .vote</td>
+        <td>1200</td>
+        <td>1</td>
+        <td>1201</td>
+        <td>0.77</td>
+      </tr>
+
+      <tr>
+        <td>66</td>
+        <td><span style="color:#e67e22">Frank</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.draft</td>
+        <td>1202</td>
+        <td>2</td>
+        <td>1204</td>
+        <td>0.51</td>
+      </tr>
+
+      <tr>
+        <td>67</td>
+        <td><span style="color:#e67e22">Frank</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.critique</td>
+        <td>1225</td>
+        <td>5</td>
+        <td>1230</td>
+        <td>0.56</td>
+      </tr>
+
+      <tr>
+        <td>68</td>
+        <td><span style="color:#e67e22">Frank</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.revise</td>
+        <td>1201</td>
+        <td>2</td>
+        <td>1203</td>
+        <td>0.57</td>
+      </tr>
+
+      <tr>
+        <td>69</td>
+        <td><span style="color:#16a085">Grace</span>
+            <span style="color:#556">[ReAct]</span>
+            .vote.step1</td>
+        <td>1352</td>
+        <td>162</td>
+        <td>1514</td>
+        <td>3.61</td>
+      </tr>
+
+      <tr>
+        <td>70</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.strategies</td>
+        <td>1233</td>
+        <td>93</td>
+        <td>1326</td>
+        <td>1.72</td>
+      </tr>
+
+      <tr>
+        <td>71</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.branch1</td>
+        <td>1233</td>
+        <td>1</td>
+        <td>1234</td>
+        <td>0.93</td>
+      </tr>
+
+      <tr>
+        <td>72</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.branch3</td>
+        <td>1241</td>
+        <td>1</td>
+        <td>1242</td>
+        <td>0.92</td>
+      </tr>
+
+      <tr>
+        <td>73</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.branch2</td>
+        <td>1235</td>
+        <td>2</td>
+        <td>1237</td>
+        <td>0.93</td>
+      </tr>
+
+      <tr>
+        <td>74</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.eval</td>
+        <td>1233</td>
+        <td>4</td>
+        <td>1237</td>
+        <td>0.60</td>
+      </tr>
+
+      <tr>
+        <td>75</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .night.draft</td>
+        <td>1239</td>
+        <td>2</td>
+        <td>1241</td>
+        <td>0.61</td>
+      </tr>
+
+      <tr>
+        <td>76</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .night.critique</td>
+        <td>1260</td>
+        <td>5</td>
+        <td>1265</td>
+        <td>0.61</td>
+      </tr>
+
+      <tr>
+        <td>77</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .night.revise</td>
+        <td>1239</td>
+        <td>2</td>
+        <td>1241</td>
+        <td>0.51</td>
+      </tr>
+
+      <tr>
+        <td>78</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.strategies</td>
+        <td>1286</td>
+        <td>118</td>
+        <td>1404</td>
+        <td>1.74</td>
+      </tr>
+
+      <tr>
+        <td>79</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.branch1</td>
+        <td>1297</td>
+        <td>67</td>
+        <td>1364</td>
+        <td>1.23</td>
+      </tr>
+
+      <tr>
+        <td>80</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.branch2</td>
+        <td>1305</td>
+        <td>91</td>
+        <td>1396</td>
+        <td>1.31</td>
+      </tr>
+
+      <tr>
+        <td>81</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.branch3</td>
+        <td>1302</td>
+        <td>82</td>
+        <td>1384</td>
+        <td>1.64</td>
+      </tr>
+
+      <tr>
+        <td>82</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .speak.eval</td>
+        <td>1533</td>
+        <td>4</td>
+        <td>1537</td>
+        <td>0.91</td>
+      </tr>
+
+      <tr>
+        <td>83</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.draft</td>
+        <td>1361</td>
+        <td>65</td>
+        <td>1426</td>
+        <td>1.43</td>
+      </tr>
+
+      <tr>
+        <td>84</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .speak.critique</td>
+        <td>1457</td>
+        <td>3</td>
+        <td>1460</td>
+        <td>0.72</td>
+      </tr>
+
+      <tr>
+        <td>85</td>
+        <td><span style="color:#16a085">Grace</span>
+            <span style="color:#556">[ReAct]</span>
+            .speech.step1</td>
+        <td>1560</td>
+        <td>117</td>
+        <td>1677</td>
+        <td>2.06</td>
+      </tr>
+
+      <tr>
+        <td>86</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.draft</td>
+        <td>1480</td>
+        <td>1</td>
+        <td>1481</td>
+        <td>0.72</td>
+      </tr>
+
+      <tr>
+        <td>87</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.critique</td>
+        <td>1507</td>
+        <td>5</td>
+        <td>1512</td>
+        <td>1.13</td>
+      </tr>
+
+      <tr>
+        <td>88</td>
+        <td><span style="color:#e67e22">Bob</span>
+            <span style="color:#556">[Reflection]</span>
+            .vote.revise</td>
+        <td>1479</td>
+        <td>1</td>
+        <td>1480</td>
+        <td>0.51</td>
+      </tr>
+
+      <tr>
+        <td>89</td>
+        <td><span style="color:#16a085">Grace</span>
+            <span style="color:#556">[ReAct]</span>
+            .vote.step1</td>
+        <td>1624</td>
+        <td>168</td>
+        <td>1792</td>
+        <td>3.07</td>
+      </tr>
+
+      <tr>
+        <td>90</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.strategies</td>
+        <td>1505</td>
+        <td>119</td>
+        <td>1624</td>
+        <td>1.69</td>
+      </tr>
+
+      <tr>
+        <td>91</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.branch1</td>
+        <td>1508</td>
+        <td>1</td>
+        <td>1509</td>
+        <td>0.57</td>
+      </tr>
+
+      <tr>
+        <td>92</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.branch3</td>
+        <td>1532</td>
+        <td>1</td>
+        <td>1533</td>
+        <td>0.56</td>
+      </tr>
+
+      <tr>
+        <td>93</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.branch2</td>
+        <td>1511</td>
+        <td>1</td>
+        <td>1512</td>
+        <td>0.57</td>
+      </tr>
+
+      <tr>
+        <td>94</td>
+        <td><span style="color:#8e44ad">Hank</span>
+            <span style="color:#556">[ToT]</span>
+            .vote.eval</td>
+        <td>1509</td>
+        <td>4</td>
+        <td>1513</td>
+        <td>0.40</td>
+      </tr>
+</table></details>
+</div>
+</body></html>

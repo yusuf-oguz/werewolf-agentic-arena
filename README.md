@@ -15,6 +15,8 @@
 
 </details>
 
+---
+
 **Research question:** independent of the underlying LLM, does the choice of agentic reasoning architecture built on top of it measurably affect performance in a social deduction game? Every agent uses the same LLM. The only variable is the agentic design pattern applied to that LLM.
 
 ## The gap in the literature

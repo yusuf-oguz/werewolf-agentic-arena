@@ -13,6 +13,8 @@
 
 **Turnuva tasarımı:** 8 ajan tipinin her rolü eşit sıklıkla oynayacağı dengelenmiş bir kombinatorik tasarım, 840 benzersiz rol ataması.
 
+**Şu ana kadarki sonuçlar:** 4 mimaride toplam 23 oyun oynandı, Kurt Adamlar %70 oranında kazandı. Tree of Thoughts, Baseline'a göre ~4 kat daha fazla LLM çağrısı kullanıyor (72'ye 17); ReAct'in gecikmesi araç çağrıları nedeniyle çağrı sayısının önerdiğinden daha yüksek (Baseline'da ~66 saniyeye karşı ~188 saniye). Örneklem küçük olduğu için istatistiksel karşılaştırma için daha fazla oyun gerekiyor.
+
 </details>
 
 ---
@@ -41,6 +43,14 @@ Existing work either compares different LLMs on the same architecture, or tests 
 A mixed arena: all 8 agent types share the table, in a combinatorial design balanced so each role gets played equally often. That works out to `C(8,2) x C(6,1) x C(5,1) = 840` unique role assignments (1680 games recommended for statistical robustness).
 
 **Metrics:** win rate by role, werewolf detection accuracy, average survival round, vote alignment, false accusation rate, role prediction F1 score.
+
+## Results so far
+
+23 games played across all four patterns. Werewolves won 16 of them (70%), in line with findings elsewhere in the LLM social deduction literature.
+
+On cost: Tree of Thoughts uses roughly 4x more LLM calls than Baseline per game (72 versus 17), and ReAct adds latency beyond what its call count alone would suggest, since each tool round-trip costs extra time (about 188s versus 66s for Baseline).
+
+A few qualitative observations stood out: Reflection-pattern werewolves pulled off convincing deception, Seer information sharing worked as intended, and in one Baseline game an agent hallucinated and voted for itself. A proper statistical comparison between patterns needs more games under a fixed design, this is still a small sample.
 
 ## Architecture
 

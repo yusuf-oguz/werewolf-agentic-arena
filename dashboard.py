@@ -691,7 +691,7 @@ body { background: #f4f6fa; color: #1a1a2e; }
      SLIDE 1 — Title
 ═══════════════════════════════════════════════════════════ -->
 <div class="slide active" id="slide-1">
-  <div class="s-label">YZV 445 — Project Presentation</div>
+  <div class="s-label">Project Presentation</div>
   <div class="s-title">🐺 Werewolf Agentic Arena</div>
   <div class="s-sub">Can LLMs play social deduction games?</div>
   <div style="margin-top:40px; font-size:1.2rem; color:#778; font-weight:600; letter-spacing:0.05em;">

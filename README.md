@@ -63,4 +63,4 @@ Python, LiteLLM (multi-provider LLM abstraction), the OpenAI SDK, AWS Bedrock (b
 - Park et al., *"Generative Agents: Interactive Simulacra of Human Behavior"*, UIST 2023
 - Arya et al., *"Revac: A Social Deduction Reasoning Agent"*, arXiv:2604.19523 (1st place, NeurIPS 2025 MindGames)
 
-For the full literature review and reasoning, see `analysis.md` and `Wolfwere_Literature_Review.md`.
+For the full literature review and reasoning, see `Wolfwere_Literature_Review.md`.

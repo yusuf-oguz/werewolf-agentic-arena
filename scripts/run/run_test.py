@@ -1,7 +1,7 @@
 """Single-game test with all 4 patterns (2 players each)."""
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from game.state import Player, Role, Pattern
 from game.engine import run_game

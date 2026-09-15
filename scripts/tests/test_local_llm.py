@@ -1,13 +1,13 @@
 """
 Local LM Studio connection and performance test.
-Run: .\.venv\Scripts\python.exe test_local_llm.py
+Run from the project root: .\.venv\Scripts\python.exe scripts\tests\test_local_llm.py
 """
 from __future__ import annotations
 import os, time, json
 from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv(Path(__file__).parent / ".env")
+load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
 BASE_URL = os.getenv("OPENAI_BASE_URL", "http://127.0.0.1:1234/v1")
 API_KEY  = os.getenv("OPENAI_API_KEY", "lm-studio")

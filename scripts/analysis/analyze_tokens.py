@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-logs_dir = Path(__file__).parent / "logs" / "games"
+logs_dir = Path(__file__).parent.parent.parent / "logs" / "games"
 
 for path in sorted(logs_dir.glob("*.json")):
     data = json.loads(path.read_text(encoding="utf-8"))

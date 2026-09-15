@@ -2,7 +2,7 @@ import boto3, json, os
 from dotenv import load_dotenv
 from pathlib import Path
 
-load_dotenv(Path(__file__).parent / ".env")
+load_dotenv(Path(__file__).parent.parent.parent / ".env")
 
 client = boto3.client(
     "bedrock-runtime",

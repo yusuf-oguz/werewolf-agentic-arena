@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 from collections import defaultdict
 
-LOGS_DIR = Path(__file__).parent / "logs" / "games"
+LOGS_DIR = Path(__file__).parent.parent.parent / "logs" / "games"
 PLAYER_NAMES_FALLBACK = ["Alice", "Bob", "Carol", "Dave", "Eve", "Frank", "Grace", "Hank"]
 
 results = []

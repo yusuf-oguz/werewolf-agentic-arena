@@ -1,9 +1,9 @@
 """
 show_game.py  —  Werewolf game log visualizer
-Usage:
-    python show_game.py logs/games/0001.json
-    python show_game.py logs/games/0001.json --detail
-    python show_game.py logs/games/0001.json --output my_report.html
+Usage (run from the project root):
+    python scripts/analysis/show_game.py logs/games/0001.json
+    python scripts/analysis/show_game.py logs/games/0001.json --detail
+    python scripts/analysis/show_game.py logs/games/0001.json --output my_report.html
 """
 
 import json

@@ -1,10 +1,10 @@
 """
 analyze.py — Per-pattern statistics from logs/game_summary.jsonl
 
-Usage:
-    python analyze.py
-    python analyze.py --csv          # also write stats to logs/analysis.csv
-    python analyze.py --min-games 5  # only show patterns with >= 5 observations
+Usage (run from the project root):
+    python scripts/analysis/analyze.py
+    python scripts/analysis/analyze.py --csv          # also write stats to logs/analysis.csv
+    python scripts/analysis/analyze.py --min-games 5  # only show patterns with >= 5 observations
 """
 from __future__ import annotations
 import json
@@ -14,7 +14,7 @@ from pathlib import Path
 from collections import defaultdict
 from statistics import mean
 
-LOGS_DIR     = Path(__file__).parent / "logs"
+LOGS_DIR     = Path(__file__).parent.parent.parent / "logs"
 SUMMARY_PATH = LOGS_DIR / "game_summary.jsonl"
 
 ROLE_GROUPS = {

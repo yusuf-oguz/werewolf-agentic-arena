@@ -1151,7 +1151,7 @@ body { background: #f4f6fa; color: #1a1a2e; }
 
     <!-- diagram image -->
     <div style="flex-shrink:0;">
-      <img id="s8-img" src="/fig/game_engine.png"
+      <img id="s8-img" src="/diagrams/game_engine.png"
            style="max-height:52vh;max-width:460px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.15);object-fit:contain;" alt="diagram">
     </div>
 
@@ -1263,7 +1263,7 @@ let s10step = 0;
 // ── Slide 11: diagrams ────────────────────────────────────────
 const s8Diags = [
   {
-    img: "/fig/game_engine.png",
+    img: "/diagrams/game_engine.png",
     title: "Game Engine",
     bullets: [
       "The engine runs the full game loop automatically.",
@@ -1273,7 +1273,7 @@ const s8Diags = [
     ]
   },
   {
-    img: "/fig/baseline.png",
+    img: "/diagrams/baseline.png",
     title: "Baseline Pattern",
     bullets: [
       "The simplest pattern — one LLM call per action.",
@@ -1283,7 +1283,7 @@ const s8Diags = [
     ]
   },
   {
-    img: "/fig/reflection.png",
+    img: "/diagrams/reflection.png",
     title: "Reflection Pattern",
     bullets: [
       "The agent first produces a draft decision.",
@@ -1293,7 +1293,7 @@ const s8Diags = [
     ]
   },
   {
-    img: "/fig/react.png",
+    img: "/diagrams/react.png",
     title: "ReAct Pattern",
     bullets: [
       "The agent alternates between Thinking and Acting.",
@@ -1303,7 +1303,7 @@ const s8Diags = [
     ]
   },
   {
-    img: "/fig/ToT.png",
+    img: "/diagrams/ToT.png",
     title: "Tree of Thoughts Pattern",
     bullets: [
       "The agent generates multiple candidate decisions in parallel.",
@@ -2251,9 +2251,9 @@ def present():
     return render_template_string(PRESENT_TEMPLATE, css=COMMON_CSS)
 
 
-@app.route("/fig/<path:filename>")
+@app.route("/diagrams/<path:filename>")
 def fig(filename):
-    fig_dir = Path(__file__).parent / "fig"
+    fig_dir = Path(__file__).parent / "diagrams"
     return send_from_directory(fig_dir, filename)
 
 

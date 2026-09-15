@@ -3,7 +3,7 @@
 <details>
 <summary>🇹🇷 Türkçe özet için tıklayın</summary>
 
-**Amaç:** Werewolf (Vampir Köylü) oyununun, LLM modellerini ya da (model sabit tutulup) farklı agentic akıl yürütme mimarilerini karşılaştırmak için uygun bir benchmark ortamı olup olmadığını araştırmak. Oyun; gizli bilgi, aldatma, koalisyon kurma ve çok turlu uzun vadeli akıl yürütme gerektiriyor, tam olarak bu tür karşılaştırmaları birbirinden ayıran türde özellikler.
+**Amaç:** LLM modellerini ya da (model sabit tutulup) farklı agentic akıl yürütme mimarilerini karşılaştırmak için uygun, iyi kurulmuş bir Werewolf (Vampir Köylü) oyun dizaynı oluşturmak. Oyun; gizli bilgi, aldatma, koalisyon kurma ve çok turlu uzun vadeli akıl yürütme gerektirdiği için bu tür karşılaştırmalara elverişli, ama bunu gerçek bir kıyaslama ortamına çevirmek, oyunun kendisinin (bağlam zenginliği, araç seti, konuşma sırası) doğru kurulmasını gerektiriyor. Bu yüzden proje boyunca oyun dizaynı sabit tutulmadı, gözlemlenen oyuncu davranışına göre sürekli geliştirildi.
 
 **4 mimari karşılaştırılıyor:** Baseline (kontrol grubu), Reflection (taslak → eleştiri → yeniden dene), ReAct (düşün → oyun durumu araçlarını sorgula → uygula), Tree of Thoughts (çoklu dal üretimi + değerlendirici seçimi).
 
@@ -15,11 +15,13 @@
 
 ---
 
-This project explores whether Werewolf (Mafia) is a good benchmark for comparing LLM models, or, holding the model fixed, different agentic reasoning architectures. The current phase does the latter: every agent in every game uses the same LLM, and the only variable is the agentic design pattern applied to it. As the game design settles, the same benchmark could shift toward the other axis, fixing the architecture and comparing models instead.
+This project builds a Werewolf (Mafia) game design meant to work as a controlled benchmark: for comparing LLM models, or, holding the model fixed, different agentic reasoning architectures. The current phase does the latter: every agent in every game uses the same LLM, and the only variable is the agentic design pattern applied to it. Getting the game itself right (how much context each agent sees, what tools it has, how turn order works) turned out to be most of the work, since a benchmark is only as controlled as the environment it runs on. As the design settles, the same benchmark could shift toward the other axis, fixing the architecture and comparing models instead.
 
 ## Why Werewolf as a benchmark
 
-Most agentic-architecture comparisons either test different LLMs on one fixed architecture, or pit one new architecture against two or three ad hoc baselines. There's no controlled, published sweep of standard agentic patterns (Baseline, Reflection, ReAct, Tree of Thoughts) run on the same LLM in the same environment, which is the gap this project starts with. Werewolf is a strong candidate for either kind of comparison: it demands private information, deception, coalition-building, and reasoning that compounds across multiple rounds, the exact properties that separate both architectures and models from each other far more sharply than a single-turn QA benchmark would.
+Most agentic-architecture comparisons test different LLMs on one fixed architecture, or pit one new architecture against a couple of ad hoc baselines, and treat the game environment itself as a given. There's no controlled, published sweep of standard agentic patterns (Baseline, Reflection, ReAct, Tree of Thoughts) run on the same LLM in the same environment, which is the gap this project starts with. Werewolf is a strong candidate for either kind of comparison: it demands private information, deception, coalition-building, and reasoning that compounds across multiple rounds, the exact properties that separate both architectures and models from each other far more sharply than a single-turn QA benchmark would.
+
+None of the reviewed literature iterates the environment while running the comparison. Werewolf Arena (Bailis et al., 2024) designed a genuinely new environment, including bidding-based turn order, but froze it and used it as a fixed tournament platform for comparing models. Bateni & Whitehead (FDG 2025) and Xu et al. (ICML 2024) ablate agent modules on an environment that stays fixed for the study. This project adopted pieces of both, Werewolf Arena's bidding for who speaks when, Xu et al.'s game-state design, and kept reshaping them as the comparison ran: building an environment fit for this kind of benchmark turned out to be as much of the work as the comparison itself.
 
 ## Four architectures compared
 
@@ -50,7 +52,7 @@ Most agentic-architecture comparisons either test different LLMs on one fixed ar
 
 ## Game engine
 
-8 players (2 werewolves, 1 seer, 1 doctor, 4 villagers). Each round: a night phase (werewolf kill, seer investigation, doctor protection), then a day phase (bid-based speaking order, two rounds of discussion, a vote, an elimination). The environment design follows Xu et al. (ICML 2024), the methodology follows Wang et al. (ACL Findings 2024).
+8 players (2 werewolves, 1 seer, 1 doctor, 4 villagers). Each round: a night phase (werewolf kill, seer investigation, doctor protection), then a day phase (bid-based speaking order, adapted from Werewolf Arena's turn-taking design (Bailis et al., 2024), two rounds of discussion, a vote, an elimination). The rest of the environment design follows Xu et al. (ICML 2024), the methodology follows Wang et al. (ACL Findings 2024).
 
 ![Game engine flow: night phase, day phase (bidding, discussion, voting, elimination), and win-condition check](diagrams/game_engine.png)
 
@@ -62,7 +64,7 @@ A mixed arena: all 8 agent types share the table, in a combinatorial design bala
 
 ## How the design evolved
 
-The four agent architectures weren't the only thing changing between games; the game itself kept getting richer as the engine matured. The clearest evidence is in the prompts themselves: for the same call type (a Tree of Thoughts voting decision), the prompt carried 781 tokens of game-state context in an early game and 3,296 tokens in a later one, over four times as much history, speech, and derived state feeding into the same decision point.
+This iteration is the direct evidence for the claim above, that building the environment was as much the point as running the comparison on it. The four agent architectures weren't the only thing changing between games; the game itself kept getting richer as the engine matured. The clearest evidence is in the prompts themselves: for the same call type (a Tree of Thoughts voting decision), the prompt carried 781 tokens of game-state context in an early game and 3,296 tokens in a later one, over four times as much history, speech, and derived state feeding into the same decision point.
 
 Play quality changed along with it. In game 14, Carol (a werewolf, playing the Reflection pattern) spent several rounds steadily building a case against an innocent player, Frank: "his reluctance to name specific suspects and his passive contributions raise serious concerns," "it's clear that he has evaded scrutiny while the rest of us are actively engaging." Frank was voted out. When suspicion then turned toward Carol herself, she reused the exact same move in reverse, against her own accuser: "his eagerness to direct suspicion towards me feels suspicious... could this be a tactic to deflect attention from himself?" Recognizing that you've become the target and reflexively turning your own successful tactic back on the accuser is coherent, multi-round deception that would take a reasonably sharp human player to counter.
 

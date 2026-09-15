@@ -46,15 +46,15 @@ Total tokens grew roughly 12x from game 1 to game 13, while call count only grew
 
 Source: `logs/game_summary.jsonl`, field `api.total_tokens` / `api.total_calls` / `api.total_elapsed_sec` per game.
 
-## 3. The engine kept evolving after game 14, in ways the 14 logs can't show
+## 3. The bid/pass/vote-reason gap is the same root cause as the 23-game loss
 
-`game/engine.py` currently builds a result dictionary that includes `night_actions`, `passes`, `bids`, `vote_accuracy`, and `vote_accuracy_by_pattern` (see the dict literal around line 420-459). None of these fields exist in any of the 14 persisted `logs/games/*.json` files, whose `result` object only has `winner, rounds, eliminations, detection_accuracy, survival_avg_rounds, api, call_log, speeches, votes`.
+`game/engine.py` currently builds a result dictionary that includes `night_actions`, `passes`, `bids`, `vote_accuracy`, and `vote_accuracy_by_pattern` (see the dict literal around line 408-459, function `_build_result`, which is the single, current code path: `run_game()` returns `_build_result(state, winner)` directly, there's no older function it might be bypassing). None of these fields exist in any of the 14 persisted `logs/games/*.json` files, whose `result` object only has `winner, rounds, eliminations, detection_accuracy, survival_avg_rounds, api, call_log, speeches, votes`. `tournament/logger.py::write_game_log()` writes whatever `result` dict it's handed, unfiltered (`{**result, "call_log": clean_call_log}`), so the code itself isn't dropping these fields.
 
-`tournament/logger.py::write_game_log()` writes whatever `result` dict it's handed via `{**result, "call_log": clean_call_log}`, it doesn't filter out `night_actions`/`passes`/`bids` itself. So the only explanation is that this part of `engine.py` was extended after game 14 was played (2026-05-18T18:05:16, the last timestamp in `game_summary.jsonl`), and no game has been run since to pick up the richer schema. Concretely, this means:
+The explanation is the repo's own root commit message (`29bd7d7`, the only commit before this project's reorganization): *"Birleştirilmiş sürüm: paylaşılan bir depodaki daha ileri implementasyon + kişisel repodaki analiz scriptleri ve turnuva logları"* (merged version: a more advanced implementation from a shared repo, plus analysis scripts and tournament logs from the personal repo). `game/engine.py` as it exists now came from the shared course repo's later, more advanced state. `logs/` came from the personal repo, run against an earlier engine that predates `bids`/`passes`/`night_actions`/`vote_accuracy`.
 
-- Bid values (0-5, per player per discussion round) were never captured for any of the 14 games, only their effect (who spoke in what order) is visible.
-- Vote reasons (the engine already models a `reason` field per vote, per the current `to_dict`) don't exist in the logged data either, `logs/games/*.json`'s `votes` entries only have `round`, `voter_id`, `target_id`.
-- The next batch of games, run under the current code, will produce noticeably richer per-round data than anything analyzed so far.
+This isn't independent from the 23-game loss, it's the same underlying gap. The personal repo's `logs/` directory was kept out of version control (to avoid bloating the repo with multi-megabyte trace files), so only whatever existed on disk locally survived. When the local copy was lost and the project had to be re-pulled from git, everything not committed disappeared, the 23 games that were never captured in this 14-game set, and, the same way, any locally-run games that might have used the richer, post-merge engine schema. What's left in `logs/` now is specifically the subset that happened to get committed before the loss, which is why it reflects the older engine version rather than the current one.
+
+One thing has changed for the better: in the current, merged repo, `logs/` is fully tracked in git (`git ls-files logs/` lists all 31 files, no `.gitignore` rule excludes it anymore). So this specific failure mode, locally-run games whose only record lived outside version control, shouldn't repeat for anything played from here on, including the richer bid/pass/vote-reason data the engine can now produce.
 
 ## 4. Format-recovery events (the engine repairing malformed LLM output)
 
@@ -86,4 +86,4 @@ An early pass over `logs/games/0002.json` appeared to show corrupted characters 
 ## Suggested follow-ups (not implemented, just flagged)
 
 - Shuffle the schedule (or randomize which pending row is picked next) before running more games, so any future snapshot of an in-progress run is representative across werewolf pairs, not a fixed slice of them (see #1).
-- The richer fields the engine can now produce (`bids`, `passes`, per-vote `reason`) are worth capturing from game 15 onward; they'd let future analysis look at bidding behavior and stated vote reasoning directly instead of only inferring it from speeches.
+- Games 15 onward will automatically pick up `bids`, `passes`, and per-vote `reason` with no code changes needed (see #3), letting future analysis look at bidding behavior and stated vote reasoning directly instead of only inferring it from speeches. Keep committing `logs/` as games are played, that's the one thing that would silently undo this.

@@ -3,7 +3,7 @@
 <details>
 <summary>🇹🇷 Türkçe özet için tıklayın</summary>
 
-**Amaç:** Werewolf (Mafia) oyununun, farklı agentic akıl yürütme mimarilerini (LLM'in kendisinden bağımsız olarak) karşılaştırmak için uygun bir benchmark ortamı olup olmadığını araştırmak. Oyun; gizli bilgi, aldatma, koalisyon kurma ve çok turlu uzun vadeli akıl yürütme gerektiriyor, tam olarak mimarileri birbirinden ayıran türde özellikler.
+**Amaç:** Werewolf (Vampir Köylü) oyununun, LLM modellerini ya da (model sabit tutulup) farklı agentic akıl yürütme mimarilerini karşılaştırmak için uygun bir benchmark ortamı olup olmadığını araştırmak. Oyun; gizli bilgi, aldatma, koalisyon kurma ve çok turlu uzun vadeli akıl yürütme gerektiriyor, tam olarak bu tür karşılaştırmaları birbirinden ayıran türde özellikler.
 
 **4 mimari karşılaştırılıyor:** Baseline (kontrol grubu), Reflection (taslak → eleştiri → yeniden dene), ReAct (düşün → oyun durumu araçlarını sorgula → uygula), Tree of Thoughts (çoklu dal üretimi + değerlendirici seçimi).
 
@@ -15,11 +15,11 @@
 
 ---
 
-This project explores whether Werewolf (Mafia) is a good benchmark for comparing agentic reasoning architectures, independent of which LLM sits underneath them. Every agent in every game uses the same LLM; the only variable is the agentic design pattern applied to it.
+This project explores whether Werewolf (Mafia) is a good benchmark for comparing LLM models, or, holding the model fixed, different agentic reasoning architectures. The current phase does the latter: every agent in every game uses the same LLM, and the only variable is the agentic design pattern applied to it. As the game design settles, the same benchmark could shift toward the other axis, fixing the architecture and comparing models instead.
 
 ## Why Werewolf as a benchmark
 
-Most agentic-architecture comparisons either test different LLMs on one fixed architecture, or pit one new architecture against two or three ad hoc baselines. There's no controlled, published sweep of standard agentic patterns (Baseline, Reflection, ReAct, Tree of Thoughts) run on the same LLM in the same environment. Werewolf is a strong candidate for that kind of benchmark: it demands private information, deception, coalition-building, and reasoning that compounds across multiple rounds, the exact properties that separate reasoning architectures from each other far more sharply than a single-turn QA benchmark would. This project builds that benchmark environment and runs the first sweep through it.
+Most agentic-architecture comparisons either test different LLMs on one fixed architecture, or pit one new architecture against two or three ad hoc baselines. There's no controlled, published sweep of standard agentic patterns (Baseline, Reflection, ReAct, Tree of Thoughts) run on the same LLM in the same environment, which is the gap this project starts with. Werewolf is a strong candidate for either kind of comparison: it demands private information, deception, coalition-building, and reasoning that compounds across multiple rounds, the exact properties that separate both architectures and models from each other far more sharply than a single-turn QA benchmark would.
 
 ## Four architectures compared
 

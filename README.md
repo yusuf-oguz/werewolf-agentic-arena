@@ -30,7 +30,23 @@ Most agentic-architecture comparisons either test different LLMs on one fixed ar
 | **ReAct** | Think, query the game-state tools (vote history, conversation log, survivors, suspicion graph, elimination history), observe, think again, act. |
 | **Tree of Thoughts** | A generator produces multiple parallel branches per decision, an evaluator scores each, the best one wins. Applied separately to bidding, speaking, voting, and night actions. |
 
-![Tree of Thoughts branching structure across all four game actions](diagrams/ToT.png)
+<table>
+<tr>
+<td align="center"><b>Baseline</b><br><a href="diagrams/baseline.png"><img src="diagrams/baseline.png" width="200"></a></td>
+<td align="center"><b>Reflection</b><br><a href="diagrams/reflection.png"><img src="diagrams/reflection.png" width="200"></a></td>
+<td align="center"><b>ReAct</b><br><a href="diagrams/react.png"><img src="diagrams/react.png" width="200"></a></td>
+<td align="center"><b>Tree of Thoughts</b><br><a href="diagrams/ToT.png"><img src="diagrams/ToT.png" width="200"></a></td>
+</tr>
+</table>
+
+<sub>Click any diagram to view it full size. Tree of Thoughts branches out this much for every single decision, bid, speech, vote, and night action alike, which is exactly why it costs 3.8x more LLM calls than Baseline.</sub>
+
+<details>
+<summary>See the full system architecture (game engine, tournament runner, and all four agents together)</summary>
+
+![Full system architecture: game engine, tournament runner, and all four agent patterns in one diagram](diagrams/architecture_full.png)
+
+</details>
 
 ## Game engine
 

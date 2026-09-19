@@ -99,7 +99,7 @@ werewolf-work/
 
 ## Tools
 
-Python, LiteLLM (multi-provider LLM abstraction), the OpenAI SDK, AWS Bedrock (boto3), local LLM support via LM Studio, Flask, tiktoken for token counting.
+Python, LiteLLM (multi-provider LLM abstraction), DeepSeek API (the model used for the 14 played games), the OpenAI SDK, AWS Bedrock (boto3), local LLM support via LM Studio, Flask, tiktoken for token counting.
 
 ## Academic references
 

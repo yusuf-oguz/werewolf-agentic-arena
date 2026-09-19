@@ -220,6 +220,7 @@ th {
 }
 td { padding: 8px 12px; border-bottom: 1px solid #1e1e3a; color: #ccc; }
 tr:hover td { background: #1a1a30; }
+.game-row { cursor: pointer; }
 
 .winner-village { color: #27ae60; font-weight: 600; }
 .winner-ww      { color: #c0392b; font-weight: 600; }

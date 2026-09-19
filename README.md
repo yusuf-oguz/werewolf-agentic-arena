@@ -1,5 +1,7 @@
 # Werewolf Agentic Arena
 
+**Live demo:** [browse the 14 played games](https://werewolf-agentic-arena.onrender.com/), transcripts, votes, and per-call traces included. Free hosting sleeps after inactivity, the first load can take 30-60 seconds to wake up.
+
 <details>
 <summary>🇹🇷 Türkçe özet için tıklayın</summary>
 
@@ -10,6 +12,8 @@
 **Uyarlama süreç içinde gelişti:** Oyun durumu temsili (bağlam zenginliği) geliştikçe, oyuncu kalitesi de değişti. Aynı çağrı türü için (ToT oy stratejisi) prompt uzunluğu erken oyunlarda 781 token iken geç oyunlarda 3296 tokene çıktı. Somut bir örnek: geç bir oyunda Reflection deseniyle oynayan bir kurt adam (Carol), önce masum bir oyuncuyu ustaca hedef gösterip elettirdi, kendisi şüphelenilince aynı retorik hamleyi tam tersine çevirip şüphelenen kişiye karşı kullandı; çok turlu, tutarlı bir blöf.
 
 **Durum: proje burada tamamlandı.** 14 oyun oynandı (840 oyunluk dengeli tasarımın küçük bir kısmı), ve proje bilinçli olarak burada sonlandırıldı: dört deseni ortama uyarladıktan sonra istatistiksel olarak anlamlı bir karşılaştırma için mimari başına yüzlerce oyun gerekiyor, oysa token maliyeti oyun başına milyonlara çıkmış durumda (13. oyun tek başına 1,1 milyon token). Mevcut 14 oyundan: Kurt Adamlar %71.4 kazandı (10/14), ToT bir oyunda Baseline'a göre ortalama ~3.8× daha fazla LLM çağrısı kullanıyor.
+
+**Canlı demo:** [14 oyunun tamamını inceleyebilirsin](https://werewolf-agentic-arena.onrender.com/), konuşmalar, oylar ve API çağrı kayıtlarıyla birlikte. Ücretsiz hosting hareketsizlikten sonra uyuyor, ilk açılış 30-60 saniye sürebilir.
 
 </details>
 
@@ -94,12 +98,12 @@ werewolf-work/
 │   └── tests/         LLM backend connection checks (Bedrock, local LM Studio)
 ├── diagrams/         Architecture and per-pattern flow diagrams
 ├── docs/            Literature review, and a full pass over the game logs
-└── dashboard.py      Flask dashboard for browsing games, timelines, and API traces
+└── dashboard.py      Flask game log browser (the live demo above), deployed on Render
 ```
 
 ## Tools
 
-Python, LiteLLM (multi-provider LLM abstraction), DeepSeek API (the model used for the 14 played games), the OpenAI SDK, AWS Bedrock (boto3), local LLM support via LM Studio, Flask, tiktoken for token counting.
+Python, LiteLLM (multi-provider LLM abstraction), DeepSeek API (the model used for the 14 played games), the OpenAI SDK, AWS Bedrock (boto3), local LLM support via LM Studio, Flask (gunicorn, deployed on Render), tiktoken for token counting.
 
 ## Academic references
 

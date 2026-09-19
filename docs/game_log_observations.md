@@ -83,7 +83,19 @@ Searched every trace response for refusal-style phrases (`as an ai`, `i cannot`,
 
 An early pass over `logs/games/0002.json` appeared to show corrupted characters (a replacement character in place of an apostrophe and an em dash in a tool description). Re-checked directly against the raw UTF-8 bytes of the file and against `logs/traces/*.jsonl` with a script that counts the actual character, zero occurrences in either. The corruption was in how a Windows terminal (cp1254 code page) was displaying the text during analysis, not in the project's actual data. Worth recording since it looked real at first glance.
 
-## Suggested follow-ups (not implemented, just flagged)
+## 9. The "Game 22 self-vote" story is real, just not from this dataset
 
-- Shuffle the schedule (or randomize which pending row is picked next) before running more games, so any future snapshot of an in-progress run is representative across werewolf pairs, not a fixed slice of them (see #1).
-- Games 15 onward will automatically pick up `bids`, `passes`, and per-vote `reason` with no code changes needed (see #3), letting future analysis look at bidding behavior and stated vote reasoning directly instead of only inferring it from speeches. Keep committing `logs/` as games are played, that's the one thing that would silently undo this.
+`dashboard.py`'s own presentation slide (the "Observations" slide, around line 1094) describes a specific anecdote: in "Game 22," a Baseline agent (Bob) read its own previous vote reason from the game history, concluded it was suspicious, and voted to eliminate itself, and states that this was later fixed by hiding vote reasons from agents and having the engine block self-votes. This is almost certainly where the "self-vote hallucination" story that circulated for this project came from, and it explains why an earlier, careful search through all 14 games' traces (see #6) turned up zero instances: Game 22 is one of the 23 games lost when the never-committed `logs/` directory disappeared (see #3), not one of the 14 that survived. The anecdote is plausible and the fix it describes matches the current code's `_find_player(exclude_id=...)` safeguard, but the specific game behind it is gone, so it can't be cited as something this dataset shows.
+
+## 10. Two other qualitative claims about this dataset didn't hold up either
+
+An earlier draft of the README claimed "Seer information sharing worked as intended when the Seer chose to reveal" and "vote justifications (recorded but not shown to other players) were consistently more candid than the public speeches." Neither survives a direct check against the 14 games:
+
+- Vote reasons aren't recorded at all here (see #3): Baseline and Reflection votes in the traces are bare names, e.g. `Alice[Baseline].vote -> "Carol"`, nothing else. The only reasoning trace visible anywhere is ReAct's internal `Thought:` steps, which is normal chain-of-thought, not a distinct "private reason" feature.
+- The clearest seer-reveal instance found (game 11: Frank, the seer, tells the group "I have confirmed information on Alice's true role as a werewolf") was met with the village voting Frank out that same round, not trusting the claim. The village did win that game eventually (both werewolves were caught over the next two rounds), but not because the reveal was believed.
+
+Like #9, both claims most likely trace back to the lost 23-game dataset rather than to anything in the 14 games this document is based on. Both have been removed from the README.
+
+## If this project is ever revisited
+
+Not planned, the project stops at 14 games by choice (see the README). If it were picked back up, two things would need fixing first, not as an afterthought: shuffling the schedule (or randomizing which pending row is picked next) so a partial run stays representative across werewolf pairs, not a fixed slice of them (see #1), and continuing to commit `logs/` as games are played, since that is the one habit whose absence caused both the 23-game loss and the schema gap in #3.

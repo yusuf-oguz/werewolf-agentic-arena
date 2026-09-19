@@ -1,5 +1,5 @@
 """
-dashboard.py  —  Werewolf Arena interactive dashboard
+dashboard.py - Werewolf Arena interactive dashboard
 Usage:
     python dashboard.py           # localhost:5000
     python dashboard.py --port 8080
@@ -395,7 +395,7 @@ hr { border: none; border-top: 1px solid #2a2a4a; margin: 24px 0; }
 HOME_TEMPLATE = """
 <!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Werewolf Arena — Dashboard</title>
+<title>Werewolf Arena - Dashboard</title>
 <style>{{ css }}</style>
 </head><body>
 
@@ -439,7 +439,7 @@ HOME_TEMPLATE = """
   </div>
 
   <!-- Per-pattern API stats -->
-  <h2>Pattern — API Usage (all games)</h2>
+  <h2>Pattern - API Usage (all games)</h2>
   <div class="pat-grid">
     {% for p, s in stats.pat_stats.items() %}
     {% set pc = pattern_color[p] %}
@@ -556,11 +556,11 @@ document.getElementById('last-updated').textContent = 'Loaded ' + new Date().toL
 PRESENT_TEMPLATE = """
 <!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Werewolf Arena — Presentation</title>
+<title>Werewolf Arena - Presentation</title>
 <style>
 {{ css }}
 
-/* ── Presentation overrides — light theme ── */
+/* -- Presentation overrides, light theme -- */
 body { background: #f4f6fa; color: #1a1a2e; }
 
 /* override navbar for light bg */
@@ -759,17 +759,17 @@ body { background: #f4f6fa; color: #1a1a2e; }
       <div class="ph-label">💉 Doctor wakes up</div>
       <div class="ph-text">
         The Doctor secretly chooses one player to protect tonight.<br>
-        If the Doctor picks the same player the werewolves targeted — <b>that player survives.</b><br>
-        If not — <b>that player is eliminated.</b>
+        If the Doctor picks the same player the werewolves targeted, <b>that player survives.</b><br>
+        If not, <b>that player is eliminated.</b>
       </div>
     </div>
 
     <div class="phase-box day-box" id="p3-day">
-      <div class="ph-label">☀️ Everyone wakes up — Day Phase</div>
+      <div class="ph-label">☀️ Everyone wakes up, Day Phase</div>
       <div class="ph-text">
         The result of the night is announced.<br>
         All players <b>discuss, accuse, and defend.</b><br>
-        Everyone votes. The most-voted player is eliminated — and their role is revealed.
+        Everyone votes. The most-voted player is eliminated, and their role is revealed.
       </div>
     </div>
 
@@ -843,7 +843,7 @@ body { background: #f4f6fa; color: #1a1a2e; }
       <div class="ph-label">🎯 Why this project</div>
       <div class="ph-text">
         We want to see: does the <b>reasoning strategy</b> matter?<br>
-        Same LLM, same game — but different patterns. Which one plays better?
+        Same LLM, same game, but different patterns. Which one plays better?
       </div>
     </div>
 
@@ -881,7 +881,7 @@ body { background: #f4f6fa; color: #1a1a2e; }
 
   </div>
   <div class="s-body" style="margin-top:28px;font-size:1.1rem;color:#667;">
-    All four patterns use the same LLM — only the <b style="color:#1a1a2e">pattern</b> differs.
+    All four patterns use the same LLM; only the <b style="color:#1a1a2e">pattern</b> differs.
   </div>
   <div class="slide-num">6 / 11</div>
 </div>
@@ -913,7 +913,7 @@ body { background: #f4f6fa; color: #1a1a2e; }
     </div>
 
     <div class="phase-box day-box" id="p7-day">
-      <div class="ph-label">☀️ Day Phase — Bidding &amp; Speaking</div>
+      <div class="ph-label">☀️ Day Phase, Bidding &amp; Speaking</div>
       <div class="ph-text">
         Agents bid 0–5 to claim speaking order. Higher bid → speaks first.<br>
         Each agent gives a speech. There are two discussion rounds.<br>
@@ -924,7 +924,7 @@ body { background: #f4f6fa; color: #1a1a2e; }
     <div class="phase-box neutral-box" id="p7-engine">
       <div class="ph-label">⚙️ Game Engine</div>
       <div class="ph-text">
-        A Python engine runs the game loop — no human moderator.<br>
+        A Python engine runs the game loop, no human moderator.<br>
         All actions, speeches, votes, and bids are logged to JSON.<br>
         Results are shown in a dashboard for analysis.
       </div>
@@ -951,7 +951,7 @@ body { background: #f4f6fa; color: #1a1a2e; }
   <div style="display:flex;flex-direction:column;gap:12px;max-width:860px;width:100%">
 
     <div class="phase-box night-box" id="p8-bid">
-      <div class="ph-label">🎯 bid() — Speaking Interest</div>
+      <div class="ph-label">🎯 bid(), Speaking Interest</div>
       <div class="ph-text">
         Before each discussion round, every agent submits a bid from <b>0 to 5.</b><br>
         Higher bid → speaks earlier in the round. Bid 0 = pass this round.<br>
@@ -960,29 +960,29 @@ body { background: #f4f6fa; color: #1a1a2e; }
     </div>
 
     <div class="phase-box day-box" id="p8-speak">
-      <div class="ph-label">🗣️ speak() — Give a Speech</div>
+      <div class="ph-label">🗣️ speak(), Give a Speech</div>
       <div class="ph-text">
         Agents speak in bid order. There are <b>two discussion rounds</b> per day.<br>
         A speech can accuse, defend, share information, or bluff.<br>
-        Agents can also <b>pass</b> — choosing silence is also a strategy.
+        Agents can also <b>pass</b>, choosing silence is also a strategy.
       </div>
     </div>
 
     <div class="phase-box day-box" id="p8-vote">
-      <div class="ph-label">🗳️ vote() — Eliminate a Player</div>
+      <div class="ph-label">🗳️ vote(), Eliminate a Player</div>
       <div class="ph-text">
         After discussion, every surviving agent votes for one player to eliminate.<br>
         The most-voted player is eliminated and their <b>role is revealed.</b><br>
-        Agents submit a name and a private reason — the reason is not shown to others.
+        Agents submit a name and a private reason, the reason is not shown to others.
       </div>
     </div>
 
     <div class="phase-box night-box" id="p8-night">
-      <div class="ph-label">🌙 night_action() — Secret Role Action</div>
+      <div class="ph-label">🌙 night_action(), Secret Role Action</div>
       <div class="ph-text">
         Each night, role-specific agents act secretly.<br>
         <b style="color:#c0392b">Werewolf:</b> picks a target to eliminate.<br>
-        <b style="color:#6c3483">Seer:</b> picks a player to investigate — learns their role.<br>
+        <b style="color:#6c3483">Seer:</b> picks a player to investigate, learns their role.<br>
         <b style="color:#1a7a40">Doctor:</b> picks a player to protect from werewolves.
       </div>
     </div>
@@ -1003,15 +1003,15 @@ body { background: #f4f6fa; color: #1a1a2e; }
     <!-- summary row -->
     <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
       <div style="background:#fff;border-radius:14px;padding:20px 32px;border:2px solid #c8cfe8;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.07);min-width:160px;">
-        <div style="font-size:3rem;font-weight:900;color:#c47a00;">23</div>
+        <div style="font-size:3rem;font-weight:900;color:#c47a00;">14</div>
         <div style="font-size:1rem;color:#556;font-weight:600;margin-top:4px;">Games Played</div>
       </div>
       <div style="background:#fdecea;border-radius:14px;padding:20px 32px;border:2px solid #c0392b;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.07);min-width:160px;">
-        <div style="font-size:3rem;font-weight:900;color:#c0392b;">16</div>
+        <div style="font-size:3rem;font-weight:900;color:#c0392b;">10</div>
         <div style="font-size:1rem;color:#556;font-weight:600;margin-top:4px;">Werewolf Wins</div>
       </div>
       <div style="background:#edfaf3;border-radius:14px;padding:20px 32px;border:2px solid #1a7a40;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.07);min-width:160px;">
-        <div style="font-size:3rem;font-weight:900;color:#1a7a40;">7</div>
+        <div style="font-size:3rem;font-weight:900;color:#1a7a40;">4</div>
         <div style="font-size:1rem;color:#556;font-weight:600;margin-top:4px;">Village Wins</div>
       </div>
     </div>
@@ -1030,27 +1030,27 @@ body { background: #f4f6fa; color: #1a1a2e; }
         <tbody>
           <tr style="border-top:1px solid #eee;">
             <td style="padding:14px 20px;font-weight:700;color:#5a6270;">⬜ Baseline</td>
-            <td style="padding:14px 20px;text-align:right;color:#333;">16.5</td>
-            <td style="padding:14px 20px;text-align:right;color:#333;">35,588</td>
-            <td style="padding:14px 20px;text-align:right;color:#333;">66 s</td>
+            <td style="padding:14px 20px;text-align:right;color:#333;">15.6</td>
+            <td style="padding:14px 20px;text-align:right;color:#333;">39,572</td>
+            <td style="padding:14px 20px;text-align:right;color:#333;">33 s</td>
           </tr>
           <tr style="border-top:1px solid #eee;background:#fffbee;">
             <td style="padding:14px 20px;font-weight:700;color:#c05e0a;">🔄 Reflection</td>
-            <td style="padding:14px 20px;text-align:right;color:#333;">55.6</td>
-            <td style="padding:14px 20px;text-align:right;color:#333;">159,168</td>
-            <td style="padding:14px 20px;text-align:right;color:#333;">161 s</td>
+            <td style="padding:14px 20px;text-align:right;color:#333;">56.0</td>
+            <td style="padding:14px 20px;text-align:right;color:#333;">182,888</td>
+            <td style="padding:14px 20px;text-align:right;color:#333;">100 s</td>
           </tr>
           <tr style="border-top:1px solid #eee;">
             <td style="padding:14px 20px;font-weight:700;color:#0e7060;">⚙️ ReAct</td>
-            <td style="padding:14px 20px;text-align:right;color:#333;">18.3</td>
-            <td style="padding:14px 20px;text-align:right;color:#333;">46,448</td>
-            <td style="padding:14px 20px;text-align:right;color:#333;">188 s</td>
+            <td style="padding:14px 20px;text-align:right;color:#333;">15.9</td>
+            <td style="padding:14px 20px;text-align:right;color:#333;">42,607</td>
+            <td style="padding:14px 20px;text-align:right;color:#333;">65 s</td>
           </tr>
           <tr style="border-top:1px solid #eee;background:#f9f5ff;">
             <td style="padding:14px 20px;font-weight:700;color:#6c3483;">🌳 Tree of Thoughts</td>
-            <td style="padding:14px 20px;text-align:right;color:#333;">72.2</td>
-            <td style="padding:14px 20px;text-align:right;color:#333;">181,168</td>
-            <td style="padding:14px 20px;text-align:right;color:#333;">354 s</td>
+            <td style="padding:14px 20px;text-align:right;color:#333;">59.0</td>
+            <td style="padding:14px 20px;text-align:right;color:#333;">153,089</td>
+            <td style="padding:14px 20px;text-align:right;color:#333;">130 s</td>
           </tr>
         </tbody>
       </table>
@@ -1060,11 +1060,11 @@ body { background: #f4f6fa; color: #1a1a2e; }
     <div style="display:flex;gap:12px;flex-wrap:wrap;">
       <div class="phase-box neutral-box show" style="flex:1;min-width:220px;text-align:left;padding:16px 20px;">
         <div class="ph-label">💡 Cost</div>
-        <div class="ph-text" style="font-size:1rem;">ToT uses <b>4× more calls</b> than Baseline per game. Reflection is the second most expensive.</div>
+        <div class="ph-text" style="font-size:1rem;">ToT uses <b>about 3.8x more calls</b> than Baseline per game. Reflection is close behind ToT despite being conceptually simpler.</div>
       </div>
       <div class="phase-box neutral-box show" style="flex:1;min-width:220px;text-align:left;padding:16px 20px;">
         <div class="ph-label">⏱️ Speed</div>
-        <div class="ph-text" style="font-size:1rem;">ReAct is slower than its call count suggests — tool calls add latency. ToT takes <b>~6 minutes</b> per game.</div>
+        <div class="ph-text" style="font-size:1rem;">ReAct is slower than its call count suggests, tool calls add latency. ToT's own calls take <b>about 130 seconds</b> per game.</div>
       </div>
     </div>
 
@@ -1081,55 +1081,54 @@ body { background: #f4f6fa; color: #1a1a2e; }
 
   <div style="max-width:860px;width:100%">
     <div class="phase-box neutral-box show" style="text-align:left;margin-bottom:14px;">
-      <div class="ph-label">⚠️ No Statistical Conclusions Yet</div>
+      <div class="ph-label">⚠️ Not a Statistically Meaningful Comparison</div>
       <div class="ph-text" style="font-size:1.05rem;">
-        The game design changed frequently during development.<br>
-        23 games is not enough for statistically reliable comparisons between patterns.<br>
-        What we have are <b>qualitative observations</b> — things we noticed game by game.
+        14 games is nowhere near enough for statistically reliable comparisons between patterns, a proper one needs on the order of hundreds of games per architecture.<br>
+        Getting there was too costly to justify here, prompt cost alone grew past a million tokens per game by game 13.<br>
+        What we have instead are <b>qualitative observations</b> and a full audit of the logs, things we noticed and verified game by game.
       </div>
     </div>
 
     <div style="display:flex;flex-direction:column;gap:10px;" id="obs-list">
 
       <div class="phase-box night-box" id="obs1">
-        <div class="ph-label">🔴 Hallucination — Bob voted for himself</div>
+        <div class="ph-label">⚪ Self-votes are blocked by the engine, invisibly</div>
         <div class="ph-text" style="font-size:1rem;">
-          In Game 22, a Baseline agent (Bob) read its own previous vote reason from the game history.<br>
-          It concluded that it was suspicious — and voted to eliminate itself.<br>
-          <b>Fix:</b> vote reasons are now hidden from all agents. Self-votes are blocked by the engine.
+          The engine's vote resolver excludes the voter's own id when matching a name, so even if an agent's raw text suggested voting for itself, it silently resolves to a random alive player instead.<br>
+          That safeguard leaves no trace in the logs when it fires, so it's impossible to tell from the data alone how often it actually has.
         </div>
       </div>
 
       <div class="phase-box day-box" id="obs2">
-        <div class="ph-label">🟢 Successful manipulation — Reflection werewolf deflects suspicion</div>
+        <div class="ph-label">🟢 Successful manipulation: Reflection werewolf deflects suspicion</div>
         <div class="ph-text" style="font-size:1rem;">
-          In Game 22, Carol (Reflection, Werewolf) noticed she was being accused.<br>
-          She gave a speech redirecting suspicion toward an innocent villager — and it worked.<br>
-          The village voted out the wrong player that round.
+          In Game 14, Carol (Reflection, Werewolf) spent several rounds building a case against an innocent player, Frank, who was voted out.<br>
+          When suspicion turned to her, she reused the exact same move in reverse against her own accuser.<br>
+          A coherent, multi-round bluff that would take a sharp human player to counter.
         </div>
       </div>
 
       <div class="phase-box day-box" id="obs3">
-        <div class="ph-label">🟢 Seer information used effectively</div>
+        <div class="ph-label">🟡 A scheduling issue narrowed what we could actually test</div>
         <div class="ph-text" style="font-size:1rem;">
-          In several games, the Seer agent correctly identified a werewolf and revealed it during discussion.<br>
-          Other agents trusted the claim and coordinated their votes — village won those rounds.
+          The 840-game schedule is generated in a fixed order and consumed sequentially, not shuffled.<br>
+          As a direct result, every werewolf in all 14 games played so far has been Baseline or Reflection, ReAct and Tree of Thoughts have never played werewolf once.<br>
+          Full writeup in <code>docs/game_log_observations.md</code>.
         </div>
       </div>
 
       <div class="phase-box night-box" id="obs4">
-        <div class="ph-label">🔴 Reflection leaked internal reasoning</div>
+        <div class="ph-label">🟡 Cost grew about 12x over the run</div>
         <div class="ph-text" style="font-size:1rem;">
-          In Game 22, Carol's draft-critique-revise log included: <i>"helps Carol and me blend in."</i><br>
-          This honest draft exposed wolf-team thinking — visible in our logs but not to other agents.<br>
-          It confirmed the pattern is reasoning correctly, but naively.
+          Total tokens per game went from under 100,000 in game 1 to over 1.1 million in game 13, mostly from bigger prompts, not more calls.<br>
+          That growth is the main reason scaling this up to a properly powered comparison wasn't pursued.
         </div>
       </div>
 
       <div class="phase-box night-box" id="obs5">
-        <div class="ph-label">🔴 Werewolves win most games</div>
+        <div class="ph-label">🔴 Werewolves won most games</div>
         <div class="ph-text" style="font-size:1rem;">
-          16 out of 23 games were won by werewolves.<br>
+          10 out of 14 games were won by werewolves (71%).<br>
           Villagers struggle to coordinate without a confirmed information source.<br>
           This matches findings in the academic literature on LLM social deduction games.
         </div>
@@ -1223,7 +1222,7 @@ const s2Roles = [
     bullets: [
       "There is <b>1 Doctor</b> in this game.",
       "Every night, the Doctor secretly protects one player.",
-      "If the Doctor protects the werewolves' target — that player survives.",
+      "If the Doctor protects the werewolves' target, that player survives.",
       "The Doctor does not know who the werewolves are.",
     ]
   },
@@ -1234,7 +1233,7 @@ const s2Roles = [
       "There is <b>1 Seer</b> in this game.",
       "Every night, the Seer secretly investigates one player.",
       "The game reveals: <b>werewolf</b> or <b>not a werewolf.</b>",
-      "The Seer must share this knowledge carefully — without being eliminated.",
+      "The Seer must share this knowledge carefully, without being eliminated.",
     ]
   },
 ];
@@ -1276,7 +1275,7 @@ const s8Diags = [
     img: "/diagrams/baseline.png",
     title: "Baseline Pattern",
     bullets: [
-      "The simplest pattern — one LLM call per action.",
+      "The simplest pattern, one LLM call per action.",
       "The agent receives the game history and outputs its decision directly.",
       "No reasoning steps, no self-correction.",
       "This is the control group for comparison.",
@@ -1289,7 +1288,7 @@ const s8Diags = [
       "The agent first produces a draft decision.",
       "Then it critiques its own draft: is this reasoning sound?",
       "Finally it revises and outputs the final decision.",
-      "More LLM calls per action — but more deliberate output.",
+      "More LLM calls per action, but more deliberate output.",
     ]
   },
   {
@@ -1309,7 +1308,7 @@ const s8Diags = [
       "The agent generates multiple candidate decisions in parallel.",
       "Each candidate follows a different line of reasoning.",
       "A separate evaluator call picks the best candidate.",
-      "The most thorough pattern — highest token cost per action.",
+      "The most thorough pattern, highest token cost per action.",
     ]
   },
 ];
@@ -1511,7 +1510,7 @@ updateButtons();
 GAME_TEMPLATE = """
 <!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Game #{{ game_id }} — Werewolf Arena</title>
+<title>Game #{{ game_id }} - Werewolf Arena</title>
 <style>{{ css }}</style>
 </head><body>
 
@@ -1677,7 +1676,7 @@ GAME_TEMPLATE = """
           {% set ns.cur_sr = sr %}
           {# Bid table header for this speech_round #}
           {% if ns.cur_sr > 1 %}<br>{% endif %}
-          <span class="phase-label phase-day">Day — Discussion Round {{ sr }}</span>
+          <span class="phase-label phase-day">Day, Discussion Round {{ sr }}</span>
           {% if rdata.bids.get(sr) %}
           <div style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px">
             {% for b in rdata.bids[sr] | sort(attribute='bid', reverse=true) %}
@@ -1764,7 +1763,7 @@ GAME_TEMPLATE = """
       {# If no discussion items but bids exist (all passed before speaking), show bid tables #}
       {% if not rdata.discussion and rdata.bids %}
         {% for sr in rdata.bids | sort %}
-        <span class="phase-label phase-day">Day — Discussion Round {{ sr }}</span>
+        <span class="phase-label phase-day">Day, Discussion Round {{ sr }}</span>
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px">
           {% for b in rdata.bids[sr] | sort(attribute='bid', reverse=true) %}
           {% set binfo = player_info.get(b.name, {}) %}
@@ -1788,7 +1787,7 @@ GAME_TEMPLATE = """
     {% endif %}
 
     {% if rdata.votes %}
-      <span class="phase-label phase-day">Day — Voting</span><br>
+      <span class="phase-label phase-day">Day, Voting</span><br>
       {% set tally = namespace(d={}) %}
       {% for v in rdata.votes %}
       {% set voter = player_names[v.voter_id] %}
@@ -1858,7 +1857,7 @@ GAME_TEMPLATE = """
   <div id="calllog-section" style="display:none;margin-bottom:16px">
     <div class="card" style="padding:14px 18px">
       <div style="font-size:0.8rem;color:#888;margin-bottom:8px">
-        {{ call_log|length }} API calls total — click a row to expand prompt/response
+        {{ call_log|length }} API calls total, click a row to expand prompt/response
       </div>
       <table class="call-log-table" id="call-log-table">
         <tr>
